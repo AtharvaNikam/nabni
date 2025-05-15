@@ -1,25 +1,18 @@
 import PropTypes from 'prop-types';
 import { useEffect, useReducer, useCallback, useMemo } from 'react';
 // utils
-import { login as loginApi, register as registerApi, sendOtp as sendOtpApi, verifyOtp as verifyOtpApi } from 'src/api/auth';
-import { useLocales } from 'src/locales';
+import axios, { endpoints } from 'src/utils/axios';
 //
+import { PERMISSION_KEY } from 'src/utils/constants';
 import { AuthContext } from './auth-context';
 import { isValidToken, setSession } from './utils';
-
-// ----------------------------------------------------------------------
-
-// NOTE:
-// We only build demo at basic level.
-// Customer will need to do some extra handling yourself if you want to extend the logic and other features...
 
 // ----------------------------------------------------------------------
 
 const initialState = {
   user: null,
   loading: true,
-  isOtpVerified: false,
-  pendingVerification: null, // Stores the identifier (email/phone) pending verification
+  otpResult: null,
 };
 
 const reducer = (state, action) => {
@@ -27,38 +20,31 @@ const reducer = (state, action) => {
     return {
       loading: false,
       user: action.payload.user,
-      isOtpVerified: action.payload.isOtpVerified || false,
-      pendingVerification: null,
     };
   }
   if (action.type === 'LOGIN') {
     return {
       ...state,
       user: action.payload.user,
-      isOtpVerified: false,
-      pendingVerification: action.payload.identifier,
-    };
-  }
-  if (action.type === 'VERIFY_OTP') {
-    return {
-      ...state,
-      isOtpVerified: true,
-      pendingVerification: null,
     };
   }
   if (action.type === 'REGISTER') {
     return {
       ...state,
+      user: null,
+      otpResult: action.payload.result,
+    };
+  }
+  if (action.type === 'VERIFY_REGISTER_OTP') {
+    return {
+      ...state,
       user: action.payload.user,
-      pendingVerification: null,
     };
   }
   if (action.type === 'LOGOUT') {
     return {
       ...state,
       user: null,
-      isOtpVerified: false,
-      pendingVerification: null,
     };
   }
   return state;
@@ -68,59 +54,23 @@ const reducer = (state, action) => {
 
 const STORAGE_KEY = 'accessToken';
 
-// Helper to get token from either storage
-function getStoredToken() {
-  return localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
-}
-
-// Helper to set token: always sessionStorage, and localStorage if rememberMe
-function setStoredToken(token, rememberMe) {
-  if (token) {
-    sessionStorage.setItem(STORAGE_KEY, token);
-    if (rememberMe) {
-      localStorage.setItem(STORAGE_KEY, token);
-    } else {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-  } else {
-    sessionStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(STORAGE_KEY);
-  }
-}
-
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { t } = useLocales();
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = getStoredToken();
-      console.log('Initializing auth with token:', {
-        hasToken: !!accessToken,
-        tokenSource: localStorage.getItem(STORAGE_KEY) ? 'localStorage' : 'sessionStorage',
-        isValid: accessToken ? isValidToken(accessToken) : false
-      });
+      const accessToken = sessionStorage.getItem(STORAGE_KEY);
 
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        // Get user data from token
-        const decoded = JSON.parse(atob(accessToken.split('.')[1]));
-        const user = {
-          id: decoded.user_id,
-          displayName: decoded.username,
-          email: decoded.email,
-          role: decoded.role,
-          isEmailVerified: decoded.is_email_verified,
-          isMobileVerified: decoded.is_mobile_verified,
-          mobile: decoded.mobile,
-        };
+        const response = await axios.get(endpoints.auth.me);
 
+        const user = response.data.data;
         dispatch({
           type: 'INITIAL',
           payload: {
             user,
-            isOtpVerified: true,
           },
         });
       } else {
@@ -128,7 +78,6 @@ export function AuthProvider({ children }) {
           type: 'INITIAL',
           payload: {
             user: null,
-            isOtpVerified: false,
           },
         });
       }
@@ -138,7 +87,6 @@ export function AuthProvider({ children }) {
         type: 'INITIAL',
         payload: {
           user: null,
-          isOtpVerified: false,
         },
       });
     }
@@ -149,148 +97,85 @@ export function AuthProvider({ children }) {
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (identifier, password, rememberMe) => {
-    try {
-      const response = await loginApi(identifier, password);
-      
-      if (response.success && response.data) {
-        const { data } = response;
-        
-        // Check if the login method matches the identifier type
-        const isEmail = identifier.includes('@');
-        const loginMethod = isEmail ? 'email' : 'mobile';
-        
-        if (data.login_method !== loginMethod) {
-          throw new Error(t('login_user_not_found'));
-        }
+  const login = useCallback(async (email, password) => {
+    const data = {
+      email,
+      password,
+    };
 
-        // Store user data temporarily without setting session
-        const user = {
-          id: data.user_id,
-          displayName: data.username,
-          email: data.email,
-          role: data.role,
-          isEmailVerified: data.is_email_verified,
-          isMobileVerified: data.is_mobile_verified,
-          mobile: data.mobile,
-        };
+    const response = await axios.post(endpoints.auth.login, data);
 
-        // Send OTP to the login method (email or phone)
-        try {
-          await sendOtpApi(identifier);
-        } catch (otpError) {
-          console.error('Error sending OTP:', otpError);
-          throw new Error('Failed to send verification OTP');
-        }
+    const { accessToken, user } = response.data;
+    console.log(user);
+    if (user && (user.permissions.includes('super_admin') || user.permissions.includes('admin'))) {
+      setSession(accessToken);
+      sessionStorage.setItem(PERMISSION_KEY, user.permissions[0]);
+    } else throw new Error("User Doesn't have permission");
 
-        // Set pending verification state
-        dispatch({
-          type: 'LOGIN',
-          payload: {
-            user,
-            identifier,
-          },
-        });
-
-        return {
-          success: true,
-          user,
-          message: `Please verify your ${isEmail ? 'email' : 'phone number'} to continue`
-        };
-      }
-      throw new Error(response.message || t('login_user_not_found'));
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    }
-  }, [t]);
-
-  // SEND OTP
-  const sendOtp = useCallback(async (identifier) => {
-    try {
-      const response = await sendOtpApi(identifier);
-      if (response.success) {
-        return {
-          success: true,
-          message: 'OTP sent successfully'
-        };
-      }
-      throw new Error(response.message || 'Failed to send OTP');
-    } catch (error) {
-      console.error('Send OTP error:', error);
-      throw error;
-    }
-  }, []);
-
-  // VERIFY OTP
-  const verifyOtp = useCallback(async (identifier, otp) => {
-    try {
-      const response = await verifyOtpApi(identifier, otp);
-      
-      if (response.success && response.data) {
-        const { data } = response;
-        
-        if (data.verified) {
-          // Set session and token after successful verification
-          setSession(data.accessToken);
-          setStoredToken(data.accessToken, true);
-          
-          dispatch({
-            type: 'VERIFY_OTP',
-            payload: {
-              isEmailVerified: identifier.includes('@'),
-              isMobileVerified: !identifier.includes('@'),
-            },
-          });
-
-          return {
-            success: true,
-            message: 'OTP verified successfully'
-          };
-        }
-      }
-      throw new Error(response.message || 'OTP verification failed');
-    } catch (error) {
-      console.error('OTP verification error:', error);
-      throw error;
-    }
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user,
+      },
+    });
   }, []);
 
   // REGISTER
-  const register = useCallback(async (username, email, mobile, password) => {
-    try {
-      const response = await registerApi(username, email, mobile, password);
-      const { data } = response;
+  const register = useCallback(async (email, password, username, mobile) => {
+    const data = {
+      email,
+      password,
+      username,
+      mobile,
+      role: 'Admin',
+    };
 
-      if (data.user_id) {
-        // After successful registration, send OTP to both email and mobile
-        try {
-          await Promise.all([
-            sendOtpApi(email),
-            sendOtpApi(mobile),
-          ]);
-        } catch (otpError) {
-          console.error('Error sending OTPs:', otpError);
-          // Continue with registration even if OTP sending fails
-        }
+    const response = await axios.post(endpoints.auth.register, data);
 
-        // Don't set user in state or tokens - wait for OTP verification
-        return {
-          success: true,
-          message: 'Registration successful. Please verify your email and phone number.'
-        };
-      }
-      throw new Error('Invalid response from server');
-    } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
+    const result = response.data;
+
+    dispatch({
+      type: 'REGISTER',
+      payload: {
+        user: null,
+        otpResult: result,
+      },
+    });
+    return result;
+  }, []);
+
+  // VERIFY REGISTER OTP
+  const verifyRegisterOtp = useCallback(async (email, email_otp, mobile, mobile_otp) => {
+    const data = {
+      email,
+      email_otp,
+      mobile,
+      mobile_otp,
+    };
+
+    const response = await axios.post(endpoints.auth.verifyRegisterOtp, data);
+
+    const { data: details } = response.data;
+
+    if (details.user && details.user.role === 'Admin') {
+      setSession(details.access_token); // set token in axios
+      sessionStorage.setItem(STORAGE_KEY, details.access_token);
+      sessionStorage.setItem(PERMISSION_KEY, details.user.role);
+    } else {
+      throw new Error("User doesn't have permission");
     }
+
+    dispatch({
+      type: 'VERIFY_REGISTER_OTP',
+      payload: {
+        user: details.user,
+      },
+    });
   }, []);
 
   // LOGOUT
   const logout = useCallback(async () => {
     setSession(null);
-    setStoredToken(null);
     dispatch({
       type: 'LOGOUT',
     });
@@ -300,20 +185,22 @@ export function AuthProvider({ children }) {
 
   const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
 
+  const status = state.loading ? 'loading' : checkAuthenticated;
+
   const memoizedValue = useMemo(
     () => ({
       user: state.user,
-      loading: state.loading,
-      isOtpVerified: state.isOtpVerified,
-      pendingVerification: state.pendingVerification,
-      authenticated: !!state.user,
       method: 'jwt',
+      loading: status === 'loading',
+      authenticated: status === 'authenticated',
+      unauthenticated: status === 'unauthenticated',
+      //
       login,
       register,
-      verifyOtp,
+      verifyRegisterOtp,
       logout,
     }),
-    [state.user, state.loading, state.isOtpVerified, state.pendingVerification, login, register, verifyOtp, logout]
+    [login, logout, verifyRegisterOtp, register, state.user, status]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

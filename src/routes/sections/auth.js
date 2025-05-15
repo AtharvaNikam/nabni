@@ -20,8 +20,7 @@ const AmplifyForgotPasswordPage = lazy(() => import('src/pages/auth/amplify/forg
 // JWT
 const JwtLoginPage = lazy(() => import('src/pages/auth/jwt/login'));
 const JwtRegisterPage = lazy(() => import('src/pages/auth/jwt/register'));
-const JwtVerifyEmailOtpPage = lazy(() => import('src/pages/verify-email-otp'));
-const JwtVerifyPhoneOtpPage = lazy(() => import('src/pages/verify-phone-otp'));
+const JwtVerifyRegisterOtpPage = lazy(() => import('src/pages/auth/jwt/verify-register-otp'));
 
 // FIREBASE
 const FirebaseLoginPage = lazy(() => import('src/pages/auth/firebase/login'));
@@ -88,19 +87,27 @@ const authJwt = {
   children: [
     {
       path: 'login',
-      element: <JwtLoginPage />,
+      element: (
+        <CompactLayout>
+          <JwtLoginPage />
+        </CompactLayout>
+      ),
     },
     {
       path: 'register',
-      element: <JwtRegisterPage />,
+      element: (
+        <CompactLayout>
+          <JwtRegisterPage />
+        </CompactLayout>
+      ),
     },
     {
-      path: 'verify-email-otp',
-      element: <JwtVerifyEmailOtpPage />,
-    },
-    {
-      path: 'verify-phone-otp',
-      element: <JwtVerifyPhoneOtpPage />,
+      path: 'otp-verification',
+      element: (
+        <CompactLayout>
+          <JwtVerifyRegisterOtpPage />
+        </CompactLayout>
+      ),
     },
   ],
 };

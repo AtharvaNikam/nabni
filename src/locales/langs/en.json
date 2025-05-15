@@ -126,5 +126,6 @@
   "resend_phone_otp": "Resend Phone OTP",
   "login_user_not_found": "Your email and phone number are not verified.",
   "login_email_not_verified": "Your email is not verified. Please check your inbox.",
-  "login_mobile_not_verified": "Your mobile number is not verified. Please check your SMS."
+  "login_mobile_not_verified": "Your mobile number is not verified. Please check your SMS.",
+  "please_check_your_email_&_mobile_for_otp": "Please check your email & mobile for otp!"
 }

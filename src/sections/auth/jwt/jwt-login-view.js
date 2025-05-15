@@ -46,7 +46,12 @@ export default function JwtLoginView() {
     // Only log in browser
     // You can remove this after debugging
     // eslint-disable-next-line no-console
-    console.log('Current lang:', (window.i18next && window.i18next.language) || 'unknown', 'Username:', t('username'));
+    console.log(
+      'Current lang:',
+      (window.i18next && window.i18next.language) || 'unknown',
+      'Username:',
+      t('username')
+    );
   }
 
   // fallback error messages if translation keys are missing
@@ -110,29 +115,38 @@ export default function JwtLoginView() {
   });
 
   return (
-    <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center" sx={{ bgcolor: 'background.default' }}>
-      <Card sx={{ p: { xs: 3, md: 5 }, width: 1, maxWidth: 480, boxShadow: 8, borderRadius: 3, position: 'relative' }}>
-        {/* Language Switcher */}
-        <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 10 }}>
-          <LanguagePopover />
-        </Box>
-
-        <Stack alignItems="center" spacing={2} mb={3}>
-          {/* Logo */}
-          <Box component="img" src="/logo/nabni-logo.png" alt="Nabni Logo" sx={{ width: 200, height: 140 }} />
-        </Stack>
-
-        <Typography variant="h4" align="center" gutterBottom>
+    <Box
+      minHeight="100vh"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ bgcolor: 'background.default' }}
+    >
+      <Card
+        sx={{
+          p: { xs: 3, md: 5 },
+          width: 1,
+          maxWidth: 480,
+          boxShadow: 8,
+          borderRadius: 3,
+          position: 'relative',
+        }}
+      >
+        <Typography variant="h4" align="center" gutterBottom mb={4}>
           {t('login')}
         </Typography>
 
-        {errorMsg && <Alert severity="error" sx={{ mb: 2 }}>{errorMsg}</Alert>}
+        {errorMsg && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorMsg}
+          </Alert>
+        )}
 
         <FormProvider methods={methods} onSubmit={onSubmit}>
           <Stack spacing={2}>
-            <RHFTextField 
-              name="identifier" 
-              label={t('email_or_phone')} 
+            <RHFTextField
+              name="identifier"
+              label={t('email_or_phone')}
               placeholder={t('enter_email_or_phone')}
               autoComplete="email"
             />
@@ -154,21 +168,34 @@ export default function JwtLoginView() {
             />
 
             <FormControlLabel
-              control={<Checkbox checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} color="primary" />}
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  color="primary"
+                />
+              }
               label={t('remember_me') || 'Remember Me'}
               sx={{ alignSelf: 'flex-start', mb: -1 }}
             />
 
-            <Link component={RouterLink} href={paths.auth.jwt.forgotPassword || '#'} variant="body2" color="inherit" underline="always" sx={{ alignSelf: 'flex-end' }}>
+            <Link
+              component={RouterLink}
+              href={paths.auth.jwt.forgotPassword || '#'}
+              variant="body2"
+              color="inherit"
+              underline="always"
+              sx={{ alignSelf: 'flex-end' }}
+            >
               {t('forgot_password')}
             </Link>
 
-            <LoadingButton 
-              fullWidth 
-              color="inherit" 
-              size="large" 
-              type="submit" 
-              variant="contained" 
+            <LoadingButton
+              fullWidth
+              color="inherit"
+              size="large"
+              type="submit"
+              variant="contained"
               loading={methods.formState.isSubmitting}
             >
               {t('login')}
