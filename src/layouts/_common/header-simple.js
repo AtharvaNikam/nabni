@@ -15,15 +15,16 @@ import Logo from 'src/components/logo';
 import { RouterLink } from 'src/routes/components';
 //
 import { useState } from 'react';
+import { useLocales } from 'src/locales';
 import { Box, Button, Popover, Typography } from '@mui/material';
 import { HEADER } from '../config-layout';
 import HeaderShadow from './header-shadow';
 import LanguagePopover from './language-popover';
-
 // ----------------------------------------------------------------------
 
 export default function HeaderSimple() {
   const theme = useTheme();
+  const { t } = useLocales();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleOpen = (event) => {
@@ -72,7 +73,7 @@ export default function HeaderSimple() {
             component={RouterLink}
             sx={{ typography: 'subtitle2' }}
           >
-            Need help?
+            {t('need_help')}
           </Link>
 
           <Popover

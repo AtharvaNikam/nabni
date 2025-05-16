@@ -25,7 +25,8 @@ const reducer = (state, action) => {
   if (action.type === 'LOGIN') {
     return {
       ...state,
-      user: action.payload.user,
+      user: null,
+      otpResult: action.payload.result,
     };
   }
   if (action.type === 'REGISTER') {
@@ -36,6 +37,12 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === 'VERIFY_REGISTER_OTP') {
+    return {
+      ...state,
+      user: action.payload.user,
+    };
+  }
+  if (action.type === 'VERIFY_LOGIN_OTP') {
     return {
       ...state,
       user: action.payload.user,
@@ -97,27 +104,23 @@ export function AuthProvider({ children }) {
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (email, password) => {
+  const login = useCallback(async (identifier, password) => {
     const data = {
-      email,
+      identifier,
       password,
     };
 
     const response = await axios.post(endpoints.auth.login, data);
 
-    const { accessToken, user } = response.data;
-    console.log(user);
-    if (user && (user.permissions.includes('super_admin') || user.permissions.includes('admin'))) {
-      setSession(accessToken);
-      sessionStorage.setItem(PERMISSION_KEY, user.permissions[0]);
-    } else throw new Error("User Doesn't have permission");
+    const result = response.data;
 
     dispatch({
       type: 'LOGIN',
       payload: {
-        user,
+        otpResult: result,
       },
     });
+    return result;
   }, []);
 
   // REGISTER
@@ -173,6 +176,33 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  // VERIFY LOGIN OTP
+  const verifyLoginOtp = useCallback(async (mobile_email, otp) => {
+    const data = {
+      mobile_email,
+      otp,
+    };
+
+    const response = await axios.post(endpoints.auth.verifyLoginOtp, data);
+
+    const { data: details } = response.data;
+    console.log(details);
+    if (details.user && details.user.role === 'Admin') {
+      setSession(details.access_token); // set token in axios
+      sessionStorage.setItem(STORAGE_KEY, details.access_token);
+      sessionStorage.setItem(PERMISSION_KEY, details.user.role);
+    } else {
+      throw new Error("User doesn't have permission");
+    }
+
+    dispatch({
+      type: 'VERIFY_LOGIN_OTP',
+      payload: {
+        user: details.user,
+      },
+    });
+  }, []);
+
   // LOGOUT
   const logout = useCallback(async () => {
     setSession(null);
@@ -198,9 +228,10 @@ export function AuthProvider({ children }) {
       login,
       register,
       verifyRegisterOtp,
+      verifyLoginOtp,
       logout,
     }),
-    [login, logout, verifyRegisterOtp, register, state.user, status]
+    [login, logout, verifyRegisterOtp, verifyLoginOtp, register, state.user, status]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

@@ -29,14 +29,16 @@ import { useAuthContext } from 'src/auth/hooks';
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import LanguagePopover from 'src/layouts/_common/language-popover';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
   const { login } = useAuthContext();
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+
   const [errorMsg, setErrorMsg] = useState('');
-  const searchParams = useSearchParams();
   const password = useBoolean();
   const { t } = useLocales();
   const [rememberMe, setRememberMe] = useState(false);
@@ -81,29 +83,13 @@ export default function JwtLoginView() {
   const onSubmit = methods.handleSubmit(async (data) => {
     try {
       const identifier = data.identifier.trim();
-      const isEmailLogin = isEmail(identifier);
-
-      await login?.(identifier, data.password, rememberMe);
-
-      // After successful login, check if email verification is needed
-      const userRaw = localStorage.getItem('user');
-      let user = null;
-      try {
-        user = userRaw ? JSON.parse(userRaw) : null;
-      } catch (e) {
-        user = null;
-      }
-
-      if (!user) {
-        setErrorMsg(t('login_user_not_found') || 'Your email and phone number are not verified.');
-        return;
-      }
-
-      if (isEmailLogin) {
-        router.push({ pathname: '/auth/jwt/verify-email-otp', query: { email: identifier } });
-      } else {
-        router.push(`/auth/jwt/verify-phone-otp?phone=${encodeURIComponent(identifier)}`);
-      }
+      const response = await login?.(identifier, data.password, rememberMe);
+      enqueueSnackbar(response.message, {
+        variant: 'success',
+      });
+      router.push(
+        `${paths.auth.jwt.loginOtpVerification}?identifier=${data.identifier}&loginType=${response.data.delivery_method}`
+      );
     } catch (error) {
       methods.reset();
       setErrorMsg(

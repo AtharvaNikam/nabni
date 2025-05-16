@@ -21,6 +21,7 @@ const AmplifyForgotPasswordPage = lazy(() => import('src/pages/auth/amplify/forg
 const JwtLoginPage = lazy(() => import('src/pages/auth/jwt/login'));
 const JwtRegisterPage = lazy(() => import('src/pages/auth/jwt/register'));
 const JwtVerifyRegisterOtpPage = lazy(() => import('src/pages/auth/jwt/verify-register-otp'));
+const JwtVerifyLoginOtpPage = lazy(() => import('src/pages/auth/jwt/verify-login-otp'));
 
 // FIREBASE
 const FirebaseLoginPage = lazy(() => import('src/pages/auth/firebase/login'));
@@ -106,6 +107,14 @@ const authJwt = {
       element: (
         <CompactLayout>
           <JwtVerifyRegisterOtpPage />
+        </CompactLayout>
+      ),
+    },
+    {
+      path: 'login-otp-verification',
+      element: (
+        <CompactLayout>
+          <JwtVerifyLoginOtpPage />
         </CompactLayout>
       ),
     },
