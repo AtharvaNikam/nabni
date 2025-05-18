@@ -22,6 +22,8 @@ const JwtLoginPage = lazy(() => import('src/pages/auth/jwt/login'));
 const JwtRegisterPage = lazy(() => import('src/pages/auth/jwt/register'));
 const JwtVerifyRegisterOtpPage = lazy(() => import('src/pages/auth/jwt/verify-register-otp'));
 const JwtVerifyLoginOtpPage = lazy(() => import('src/pages/auth/jwt/verify-login-otp'));
+const JwtForgotPasswordPage = lazy(() => import('src/pages/auth/jwt/forgot-password'));
+const JwtVerifyForgotPasswordPage = lazy(() => import('src/pages/auth/jwt/verify-forget-password-otp'));
 
 // FIREBASE
 const FirebaseLoginPage = lazy(() => import('src/pages/auth/firebase/login'));
@@ -99,6 +101,22 @@ const authJwt = {
       element: (
         <CompactLayout>
           <JwtRegisterPage />
+        </CompactLayout>
+      ),
+    },
+    {
+      path: 'forgot-password',
+      element: (
+        <CompactLayout>
+          <JwtForgotPasswordPage />
+        </CompactLayout>
+      ),
+    },
+      {
+      path: 'forgot-password-otp-verification',
+      element: (
+        <CompactLayout>
+          <JwtVerifyForgotPasswordPage />
         </CompactLayout>
       ),
     },

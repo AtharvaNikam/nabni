@@ -64,6 +64,8 @@ export const paths = {
       register: `${ROOTS.AUTH}/jwt/register`,
       registerOtpVerification: `${ROOTS.AUTH}/jwt/otp-verification`,
       loginOtpVerification: `${ROOTS.AUTH}/jwt/login-otp-verification`,
+      forgotPassword: `${ROOTS.AUTH}/jwt/forgot-password`,
+      forgotPasswordOtpVerification: `${ROOTS.AUTH}/jwt/forgot-password-otp-verification`,
     },
     firebase: {
       login: `${ROOTS.AUTH}/firebase/login`,

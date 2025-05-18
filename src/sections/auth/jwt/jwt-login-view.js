@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -38,7 +39,6 @@ export default function JwtLoginView() {
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [errorMsg, setErrorMsg] = useState('');
   const password = useBoolean();
   const { t } = useLocales();
   const [rememberMe, setRememberMe] = useState(false);
@@ -91,12 +91,22 @@ export default function JwtLoginView() {
         `${paths.auth.jwt.loginOtpVerification}?identifier=${data.identifier}&loginType=${response.data.delivery_method}`
       );
     } catch (error) {
-      methods.reset();
-      setErrorMsg(
-        error?.message && error?.message !== 'Invalid response from server'
-          ? error.message
-          : t('login_user_not_found') || 'Your email and phone number are not verified.'
-      );
+      if (typeof error !== 'string' && error?.error?.statusCode === 500) {
+        enqueueSnackbar('Invalid Credentials', {
+          variant: 'error',
+        });
+      } else {
+        enqueueSnackbar(
+          typeof error === 'string'
+            ? error
+            : error?.error?.message
+            ? error?.error?.message
+            : error?.message,
+          {
+            variant: 'error',
+          }
+        );
+      }
     }
   });
 
@@ -121,12 +131,6 @@ export default function JwtLoginView() {
         <Typography variant="h4" align="center" gutterBottom mb={4}>
           {t('login')}
         </Typography>
-
-        {errorMsg && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {errorMsg}
-          </Alert>
-        )}
 
         <FormProvider methods={methods} onSubmit={onSubmit}>
           <Stack spacing={2}>

@@ -126,5 +126,6 @@
   "login_email_not_verified": "لم يتم التحقق من بريدك الإلكتروني. يرجى التحقق من صندوق الوارد.",
   "login_mobile_not_verified": "لم يتم التحقق من رقم هاتفك المحمول. يرجى التحقق من الرسائل.",
   "please_check_your_email_&_mobile_for_otp": "لم يتم التحقق من رقم هاتفك المحمول. يرجى التحقق من الرسائل.",
-  "need_help": "بحاجة الى مساعدة"
+  "need_help": "بحاجة الى مساعدة",
+  "please_enter_your_registered_email_address_or_phone_number_and_we_will_send_you_a_verification_code_to_reset_your_password_based_on_the_details_you_provide":"يرجى إدخال عنوان بريدك الإلكتروني أو رقم هاتفك المسجل. سنرسل إليك رمز تحقق لإعادة تعيين كلمة المرور بناءً على التفاصيل التي تقدمها."
 }

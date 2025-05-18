@@ -1,8 +1,8 @@
 {
-  "name": "@minimal-kit/cra-js",
-  "author": "Minimals",
+  "name": "@nabmni-kit/cra-js",
+  "author": "Nabmni",
   "version": "5.1.0",
-  "description": "Cra & JavaScript",
+  "description": "Nabmni",
   "private": true,
   "scripts": {
     "start": "react-scripts start",

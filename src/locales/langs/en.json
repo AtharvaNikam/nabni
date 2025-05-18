@@ -128,5 +128,7 @@
   "login_email_not_verified": "Your email is not verified. Please check your inbox.",
   "login_mobile_not_verified": "Your mobile number is not verified. Please check your SMS.",
   "please_check_your_email_&_mobile_for_otp": "Please check your email & mobile for otp!",
-  "need_help": "Need help?"
+  "need_help": "Need help?",
+  "please_enter_your_registered_email_address_or_phone_number_and_we_will_send_you_a_verification_code_to_reset_your_password_based_on_the_details_you_provide":"Please enter your registered email address or phone number. We’ll send you a verification code to reset your password based on the details you provide."
+
 }
