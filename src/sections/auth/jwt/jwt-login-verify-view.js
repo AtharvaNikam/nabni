@@ -61,7 +61,7 @@ export default function JwtLoginVerifyView() {
 
   const defaultValues = {
     code: '',
-    identifier: `+${identifier.trim()}` || '',
+    identifier: loginType === 'email' ? `${identifier.trim()}` : `+${identifier.trim()}` || '',
   };
 
   const methods = useForm({
@@ -94,7 +94,7 @@ export default function JwtLoginVerifyView() {
   const handleResendCode = useCallback(async () => {
     try {
       const inputData = {
-        mobile_email: `+${identifier.trim()}`,
+        mobile_email: loginType === 'email' ? `${identifier.trim()}` : `+${identifier.trim()}`,
       };
       await axiosInstance.post(`/send-otp`, inputData);
       enqueueSnackbar('Otp sent successfully!');
@@ -102,7 +102,7 @@ export default function JwtLoginVerifyView() {
     } catch (error) {
       console.error(error);
     }
-  }, [enqueueSnackbar, identifier, startIdentifierCountdown]);
+  }, [enqueueSnackbar, identifier, loginType, startIdentifierCountdown]);
 
   const renderForm = (
     <Stack spacing={3} alignItems="center">
