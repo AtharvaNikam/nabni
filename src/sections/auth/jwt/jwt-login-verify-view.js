@@ -47,13 +47,21 @@ export default function JwtLoginVerifyView() {
   const VerifySchemaSchema = Yup.object().shape({
     code: Yup.string().min(6, 'Code must be at least 6 characters').required('Code is required'),
     identifier: Yup.string()
-      .required('Email is required')
-      .email('Email must be a valid email address'),
+      .required('This field is required')
+      .test(
+        'is-email-or-phone',
+        'Enter a valid email or phone number with country code',
+        (value) => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const phoneRegex = /^\+[1-9]\d{1,14}$/; // E.164 format, e.g., +919876543210
+          return emailRegex.test(value) || phoneRegex.test(value);
+        }
+      ),
   });
 
   const defaultValues = {
     code: '',
-    identifier: identifier || '',
+    identifier: `+${identifier.trim()}` || '',
   };
 
   const methods = useForm({
@@ -86,7 +94,7 @@ export default function JwtLoginVerifyView() {
   const handleResendCode = useCallback(async () => {
     try {
       const inputData = {
-        mobile_email: identifier,
+        mobile_email: `+${identifier.trim()}`,
       };
       await axiosInstance.post(`/send-otp`, inputData);
       enqueueSnackbar('Otp sent successfully!');
