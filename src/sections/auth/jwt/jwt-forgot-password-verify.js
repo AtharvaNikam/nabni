@@ -33,6 +33,7 @@ export default function JwtForgotPasswordVerifyView() {
   const searchParams = useSearchParams();
 
   const [isVerified, setIsVerified] = useState(false);
+  const [accessToken, setAccessToken] = useState();
 
   const identifier = searchParams.get('identifier');
   const loginType = searchParams.get('loginType');
@@ -99,15 +100,25 @@ export default function JwtForgotPasswordVerifyView() {
     try {
       if (!isVerified) {
         // Verify OTP
-        await verifyForgotPasswordOtp(data.identifier, data.code);
+        const response = await verifyForgotPasswordOtp(data.identifier, data.code);
         enqueueSnackbar('OTP Verified Successfully', { variant: 'success' });
+        setAccessToken(response.access_token);
         setIsVerified(true); // Move to password reset step
       } else {
         // Update password
-        const response = await axiosInstance.post(`/update-password`, {
-          identifier,
-          password: data.password,
-        });
+        const response = await axiosInstance.post(
+          `/forgot-password`,
+          {
+            mobile_email: identifier,
+            new_password: data.password,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        console.log(response);
         enqueueSnackbar('Password updated successfully!', { variant: 'success' });
         router.push(paths.auth.jwt.login); // Redirect to login
       }

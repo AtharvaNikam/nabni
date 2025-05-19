@@ -227,6 +227,7 @@ export function AuthProvider({ children }) {
         otpResult: details,
       },
     });
+    return details;
   }, []);
 
   // LOGOUT
