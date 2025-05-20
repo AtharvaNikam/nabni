@@ -18,7 +18,7 @@ import Iconify from 'src/components/iconify';
 import { useAuthContext } from 'src/auth/hooks';
 import AccountChangePassword from 'src/sections/account/account-change-password';
 import { Grid } from '@mui/material';
-import axiosInstance from 'src/utils/axios';
+import axiosInstance, { endpoints } from 'src/utils/axios';
 import { useSnackbar } from 'notistack';
 import { useLocales } from 'src/locales';
 import { LoadingButton } from '@mui/lab';
@@ -27,12 +27,14 @@ export default function UserProfileView() {
   const settings = useSettingsContext();
   const { t } = useLocales();
 
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log(user);
   const [dataDeletion, setDataDeletion] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
+  const [user, setUser] = useState();
+  console.log(user);
+
   const handleSave = async () => {
     if (dataDeletion === null) return;
     try {
@@ -48,6 +50,25 @@ export default function UserProfileView() {
       setIsSaving(false);
     }
   };
+  const getCurrentUser = async () => {
+    try {
+      const response = await axiosInstance.get(endpoints.auth.me);
+
+      const userData = response.data.data;
+      console.log(userData);
+      setUser(userData);
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(typeof error === 'string' ? error : error.error.message, {
+        variant: 'error',
+      });
+    }
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (user?.delete_after_days) {
