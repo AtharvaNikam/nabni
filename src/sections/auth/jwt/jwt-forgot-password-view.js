@@ -96,7 +96,7 @@ export default function JwtForgotPasswordView() {
         variant="contained"
         loading={isSubmitting}
       >
-        Send Request
+        {t('send_request_button')}
       </LoadingButton>
 
       <Link
@@ -110,7 +110,7 @@ export default function JwtForgotPasswordView() {
         }}
       >
         <Iconify icon="eva:arrow-ios-back-fill" width={16} />
-        Return to sign in
+        {t('return_to_sign_in')}
       </Link>
     </Stack>
   );
@@ -120,11 +120,12 @@ export default function JwtForgotPasswordView() {
       <PasswordIcon sx={{ height: 96 }} />
 
       <Stack spacing={1} sx={{ my: 5 }}>
-        <Typography variant="h3">Forgot your password?</Typography>
+        <Typography variant="h3">{t('forgot_password_title')}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Please enter your registered email address or phone number. We’ll send you a verification
-          code to reset your password, based on the details you provide.
+          {t(
+            'please_enter_your_registered_email_address_or_phone_number_and_we_will_send_you_a_verification_code_to_reset_your_password_based_on_the_details_you_provide'
+          )}
         </Typography>
       </Stack>
     </>

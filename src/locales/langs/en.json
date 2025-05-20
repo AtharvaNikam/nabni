@@ -129,6 +129,19 @@
   "login_mobile_not_verified": "Your mobile number is not verified. Please check your SMS.",
   "please_check_your_email_&_mobile_for_otp": "Please check your email & mobile for otp!",
   "need_help": "Need help?",
-  "please_enter_your_registered_email_address_or_phone_number_and_we_will_send_you_a_verification_code_to_reset_your_password_based_on_the_details_you_provide":"Please enter your registered email address or phone number. We’ll send you a verification code to reset your password based on the details you provide."
-
+  "please_enter_your_registered_email_address_or_phone_number_and_we_will_send_you_a_verification_code_to_reset_your_password_based_on_the_details_you_provide": "Please enter your registered email address or phone number. We’ll send you a verification code to reset your password based on the details you provide.",
+  "forgot_password_title": "Forgot your password?",
+  "forgot_password_description": "Please enter your registered email address or phone number. We’ll send you a verification code to reset your password, based on the details you provide.",
+  "email_or_phone_placeholder": "Email or Phone Number",
+  "send_request_button": "Send Request",
+  "home": "Home",
+  "logout": "Logout",
+  "dashboard": "Dashboard",
+  "old_password": "Old Password",
+  "new_password": "New Password",
+  "confirm_new_password": "Confirm New Password",
+  "password_requirement": "Password must be minimum 6+",
+  "save": "Save",
+  "days": "Days",
+  "data_deletion_after_days": "Data Deletion After Days"
 }

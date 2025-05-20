@@ -11,39 +11,36 @@ import Typography from '@mui/material/Typography';
 // routes
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hook';
-// hooks
-import { useMockedUser } from 'src/hooks/use-mocked-user';
 // auth
 import { useAuthContext } from 'src/auth/hooks';
 // components
 import { varHover } from 'src/components/animate';
 import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import { useLocales } from 'src/locales';
 
 // ----------------------------------------------------------------------
-
-const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: paths.dashboard.user.profile,
-  },
-  {
-    label: 'Settings',
-    linkTo: paths.dashboard.user.account,
-  },
-];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const router = useRouter();
 
+  const { t } = useLocales();
+
+  const OPTIONS = [
+    {
+      label: t('home'),
+      linkTo: '/',
+    },
+    {
+      label: t('profile'),
+      linkTo: paths.dashboard.user.profile,
+    },
+  ];
+
   const { logout, user } = useAuthContext();
-  console.log('user',user);
+  console.log('user', user);
   const { enqueueSnackbar } = useSnackbar();
 
   const popover = usePopover();

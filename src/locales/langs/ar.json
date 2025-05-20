@@ -20,6 +20,7 @@
   "general": "عام",
   "banking": "مصرفية",
   "booking": "حجز",
+  "home": "الرئيسية",
   "profile": "ملف تعريف",
   "account": "حساب",
   "product": "منتج",
@@ -127,5 +128,18 @@
   "login_mobile_not_verified": "لم يتم التحقق من رقم هاتفك المحمول. يرجى التحقق من الرسائل.",
   "please_check_your_email_&_mobile_for_otp": "لم يتم التحقق من رقم هاتفك المحمول. يرجى التحقق من الرسائل.",
   "need_help": "بحاجة الى مساعدة",
-  "please_enter_your_registered_email_address_or_phone_number_and_we_will_send_you_a_verification_code_to_reset_your_password_based_on_the_details_you_provide":"يرجى إدخال عنوان بريدك الإلكتروني أو رقم هاتفك المسجل. سنرسل إليك رمز تحقق لإعادة تعيين كلمة المرور بناءً على التفاصيل التي تقدمها."
+  "please_enter_your_registered_email_address_or_phone_number_and_we_will_send_you_a_verification_code_to_reset_your_password_based_on_the_details_you_provide": "يرجى إدخال عنوان بريدك الإلكتروني أو رقم هاتفك المسجل. سنرسل إليك رمز تحقق لإعادة تعيين كلمة المرور بناءً على التفاصيل التي تقدمها.",
+  "forgot_password_title": "هل نسيت كلمة المرور؟",
+  "forgot_password_description": "يرجى إدخال عنوان بريدك الإلكتروني أو رقم هاتفك المسجل. سنرسل لك رمز تحقق لإعادة تعيين كلمة المرور استنادًا إلى التفاصيل التي تقدمها.",
+  "email_or_phone_placeholder": "البريد الإلكتروني أو رقم الهاتف",
+  "send_request_button": "إرسال الطلب",
+  "logout": "تسجيل الخروج",
+  "dashboard": "لوحة التحكم",
+  "old_password": "كلمة المرور القديمة",
+  "new_password": "كلمة المرور الجديدة",
+  "confirm_new_password": "تأكيد كلمة المرور الجديدة",
+  "password_requirement": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+  "save": "حفظ",
+  "data_deletion_after_days": "حذف البيانات بعد عدد من الأيام",
+  "days": "أيام"
 }

@@ -72,7 +72,7 @@ export function AuthProvider({ children }) {
 
   const initialize = useCallback(async () => {
     try {
-      const accessToken = sessionStorage.getItem(STORAGE_KEY);
+      const accessToken = localStorage.getItem(STORAGE_KEY);
 
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
@@ -80,6 +80,7 @@ export function AuthProvider({ children }) {
         const response = await axios.get(endpoints.auth.me);
 
         const user = response.data.data;
+        console.log(user);
         dispatch({
           type: 'INITIAL',
           payload: {
@@ -168,8 +169,8 @@ export function AuthProvider({ children }) {
 
     if (details.user && details.user.role === 'Admin') {
       setSession(details.access_token); // set token in axios
-      sessionStorage.setItem(STORAGE_KEY, details.access_token);
-      sessionStorage.setItem(PERMISSION_KEY, details.user.role);
+      localStorage.setItem(STORAGE_KEY, details.access_token);
+      localStorage.setItem(PERMISSION_KEY, details.user.role);
     } else {
       throw new Error("User doesn't have permission");
     }
@@ -195,8 +196,8 @@ export function AuthProvider({ children }) {
     console.log(details);
     if (details.user && details.user.role === 'Admin') {
       setSession(details.access_token); // set token in axios
-      sessionStorage.setItem(STORAGE_KEY, details.access_token);
-      sessionStorage.setItem(PERMISSION_KEY, details.user.role);
+      localStorage.setItem(STORAGE_KEY, details.access_token);
+      localStorage.setItem(PERMISSION_KEY, details.user.role);
     } else {
       throw new Error("User doesn't have permission");
     }

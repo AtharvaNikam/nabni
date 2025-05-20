@@ -195,7 +195,7 @@ export default function JwtForgotPasswordVerifyView() {
         variant="contained"
         loading={isSubmitting}
       >
-        {isVerified ? 'Update Password' : 'Verify'}
+        {isVerified ? t('Update Password') : t('verify')}
       </LoadingButton>
 
       {!isVerified && (
@@ -210,7 +210,7 @@ export default function JwtForgotPasswordVerifyView() {
           }}
         >
           <Iconify icon="eva:arrow-ios-back-fill" width={16} />
-          Return to sign in
+          {t('return_to_sign_in')}
         </Link>
       )}
     </Stack>

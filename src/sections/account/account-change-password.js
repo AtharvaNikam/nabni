@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,11 +14,14 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import Iconify from 'src/components/iconify';
 import { useSnackbar } from 'src/components/snackbar';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import axiosInstance from 'src/utils/axios';
+import { useLocales } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
 export default function AccountChangePassword() {
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useLocales();
 
   const password = useBoolean();
 
@@ -53,12 +57,21 @@ export default function AccountChangePassword() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const inputData = {
+        old_password: data.oldPassword,
+        new_password: data.newPassword,
+      };
+      console.info('DATA', inputData);
+      const response = await axiosInstance.post('/change-password', inputData);
+      console.info('DATA', response);
       reset();
-      enqueueSnackbar('Update success!');
-      console.info('DATA', data);
+      enqueueSnackbar('Password updated successfully!');
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
+      const message = error?.message || 'Something went wrong';
+      enqueueSnackbar(message, {
+        variant: 'error',
+      });
     }
   });
 
@@ -68,7 +81,7 @@ export default function AccountChangePassword() {
         <RHFTextField
           name="oldPassword"
           type={password.value ? 'text' : 'password'}
-          label="Old Password"
+          label={t('old_password')}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -82,7 +95,7 @@ export default function AccountChangePassword() {
 
         <RHFTextField
           name="newPassword"
-          label="New Password"
+          label={t('new_password')}
           type={password.value ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -95,8 +108,8 @@ export default function AccountChangePassword() {
           }}
           helperText={
             <Stack component="span" direction="row" alignItems="center">
-              <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} /> Password must be minimum
-              6+
+              <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} />{' '}
+              {t('password_requirement')}
             </Stack>
           }
         />
@@ -104,7 +117,7 @@ export default function AccountChangePassword() {
         <RHFTextField
           name="confirmNewPassword"
           type={password.value ? 'text' : 'password'}
-          label="Confirm New Password"
+          label={t('confirm_new_password')}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -117,7 +130,7 @@ export default function AccountChangePassword() {
         />
 
         <LoadingButton type="submit" variant="contained" loading={isSubmitting} sx={{ ml: 'auto' }}>
-          Save Changes
+          {t('save')}
         </LoadingButton>
       </Stack>
     </FormProvider>
