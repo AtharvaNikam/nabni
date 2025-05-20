@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -31,13 +31,13 @@ export default function UserProfileView() {
   const { enqueueSnackbar } = useSnackbar();
 
   console.log(user);
-  const [dataDeletion, setDataDeletion] = useState(10);
+  const [dataDeletion, setDataDeletion] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const handleSave = async () => {
     if (dataDeletion === null) return;
     try {
       setIsSaving(true);
-      await axiosInstance.post('/api/data-deletion', { days: dataDeletion }); // Replace with actual API
+      await axiosInstance.patch('/user-profile-update', { delete_after_days: dataDeletion }); // Replace with actual API
       enqueueSnackbar('Data deletion setting saved successfully', { variant: 'success' });
     } catch (error) {
       console.error(error.message);
@@ -48,6 +48,13 @@ export default function UserProfileView() {
       setIsSaving(false);
     }
   };
+
+  useEffect(() => {
+    if (user?.delete_after_days) {
+      setDataDeletion(user?.delete_after_days);
+    }
+  }, [user]);
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs

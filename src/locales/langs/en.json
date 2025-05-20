@@ -1,7 +1,7 @@
 {
   "app": "app",
   "job": "job",
-  "user": "user",
+  "user": "User",
   "list": "list",
   "edit": "edit",
   "shop": "shop",
