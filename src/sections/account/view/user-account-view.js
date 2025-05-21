@@ -12,6 +12,7 @@ import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
+import { useLocales } from 'src/locales';
 import AccountGeneral from '../account-general';
 import AccountBilling from '../account-billing';
 import AccountSocialLinks from '../account-social-links';
@@ -20,39 +21,18 @@ import AccountChangePassword from '../account-change-password';
 
 // ----------------------------------------------------------------------
 
-const TABS = [
-  {
-    value: 'general',
-    label: 'General',
-    icon: <Iconify icon="solar:user-id-bold" width={24} />,
-  },
-  {
-    value: 'billing',
-    label: 'Billing',
-    icon: <Iconify icon="solar:bill-list-bold" width={24} />,
-  },
-  {
-    value: 'notifications',
-    label: 'Notifications',
-    icon: <Iconify icon="solar:bell-bing-bold" width={24} />,
-  },
-  {
-    value: 'social',
-    label: 'Social links',
-    icon: <Iconify icon="solar:share-bold" width={24} />,
-  },
-  {
-    value: 'security',
-    label: 'Security',
-    icon: <Iconify icon="ic:round-vpn-key" width={24} />,
-  },
-];
-
-// ----------------------------------------------------------------------
-
 export default function AccountView() {
   const settings = useSettingsContext();
 
+  const { t } = useLocales();
+
+  const TABS = [
+    {
+      value: 'general',
+      label: t('general'),
+      icon: <Iconify icon="solar:user-id-bold" width={24} />,
+    },
+  ];
   const [currentTab, setCurrentTab] = useState('general');
 
   const handleChangeTab = useCallback((event, newValue) => {
@@ -62,11 +42,11 @@ export default function AccountView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading="Account"
+        heading={t('account')}
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'User', href: paths.dashboard.user.root },
-          { name: 'Account' },
+          { name: t('dashboard'), href: paths.dashboard.root },
+          { name: t('user'), href: paths.dashboard.user.root },
+          { name: t('account') },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

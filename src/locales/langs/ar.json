@@ -141,5 +141,10 @@
   "password_requirement": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
   "save": "حفظ",
   "data_deletion_after_days": "حذف البيانات بعد عدد من الأيام",
-  "days": "أيام"
+  "days": "أيام",
+  "data_deletion_after": "حذف البيانات بعد",
+  "edit_profile": "تعديل الملف الشخصي",
+  "edit_email": "تعديل البريد الإلكتروني",
+  "max_file_size": "الحجم الأقصى {{size}}",
+  "allowed_file_types": "الملفات المسموح بها *.jpeg، *.jpg، *.png، *.gif"
 }

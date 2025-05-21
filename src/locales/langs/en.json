@@ -17,11 +17,11 @@
   "lists": "lists",
   "create": "create",
   "kanban": "kanban",
-  "general": "general",
+  "general": "General",
   "banking": "banking",
   "booking": "booking",
   "profile": "Profile",
-  "account": "account",
+  "account": "Account",
   "product": "product",
   "invoice": "invoice",
   "details": "details",
@@ -143,5 +143,10 @@
   "password_requirement": "Password must be minimum 6+",
   "save": "Save",
   "days": "Days",
-  "data_deletion_after_days": "Data Deletion After Days"
+  "data_deletion_after_days": "Data Deletion After Days",
+  "data_deletion_after": "Data Deletion After",
+  "edit_profile": "Edit Profile",
+  "edit_email": "Edit Email",
+  "allowed_file_types": "Allowed *.jpeg, *.jpg, *.png, *.gif",
+  "max_file_size": "max size of {{size}}"
 }

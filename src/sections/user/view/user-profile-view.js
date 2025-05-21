@@ -22,9 +22,12 @@ import axiosInstance, { endpoints } from 'src/utils/axios';
 import { useSnackbar } from 'notistack';
 import { useLocales } from 'src/locales';
 import { LoadingButton } from '@mui/lab';
+import { useNavigate } from 'react-router';
 
 export default function UserProfileView() {
   const settings = useSettingsContext();
+  const navigate = useNavigate();
+
   const { t } = useLocales();
 
   // const { user } = useAuthContext();
@@ -164,14 +167,20 @@ export default function UserProfileView() {
               variant="body2"
               sx={{ color: 'white', opacity: 0.9, mb: 1, fontWeight: 500 }}
             >
-              Data Deletion After <b>{dataDeletion} Days</b>
+              <b>{`${t('data_deletion_after')} ${dataDeletion} ${t('days')}`} </b>
             </Typography>
             <Stack direction="row" spacing={2} alignItems="center">
-              <Button variant="outlined" startIcon={<Iconify icon="solar:user-edit-bold" />}>
-                Edit Profile
+              <Button
+                variant="outlined"
+                startIcon={<Iconify icon="solar:user-edit-bold" />}
+                onClick={() => {
+                  navigate(paths.dashboard.user.account);
+                }}
+              >
+                {t('edit_profile')}
               </Button>
               <Button variant="outlined" startIcon={<Iconify icon="solar:mail-bold" />}>
-                Edit Email
+                {t('edit_email')}
               </Button>
             </Stack>
           </Box>
