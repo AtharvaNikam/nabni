@@ -36,6 +36,11 @@ const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
 const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
+// DOCUMENTTYPE
+const DocumentTypeListPage = lazy(() => import('src/pages/dashboard/documentType/list'));
+const DocumentTypeCreatePage = lazy(() => import('src/pages/dashboard/documentType/new'));
+const DocumentTypeEditPage = lazy(() => import('src/pages/dashboard/documentType/edit'));
+const DocumentTypeViewPage = lazy(() => import('src/pages/dashboard/documentType/view'));
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
@@ -96,6 +101,16 @@ export const dashboardRoutes = [
           { path: 'new', element: <UserCreatePage /> },
           { path: ':id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
+        ],
+      },
+      {
+        path: 'documentType',
+        children: [
+          { element: <DocumentTypeListPage />, index: true },
+          { path: 'list', element: <DocumentTypeListPage /> },
+          { path: 'new', element: <DocumentTypeCreatePage /> },
+          { path: ':id/edit', element: <DocumentTypeEditPage /> },
+          { path: ':id/view', element: <DocumentTypeViewPage /> },
         ],
       },
       {

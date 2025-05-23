@@ -103,8 +103,8 @@ export const paths = {
     calendar: `${ROOTS.DASHBOARD}/calendar`,
     fileManager: `${ROOTS.DASHBOARD}/file-manager`,
     permission: `${ROOTS.DASHBOARD}/permission`,
-    uploadDocument:`${ROOTS.DASHBOARD}/upload-documents`,
-    documents:`${ROOTS.DASHBOARD}/documents`,
+    uploadDocument: `${ROOTS.DASHBOARD}/upload-documents`,
+    documents: `${ROOTS.DASHBOARD}/documents`,
     general: {
       app: `${ROOTS.DASHBOARD}/app`,
       ecommerce: `${ROOTS.DASHBOARD}/ecommerce`,
@@ -124,6 +124,13 @@ export const paths = {
       demo: {
         edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
       },
+    },
+    documentType: {
+      root: `${ROOTS.DASHBOARD}/documentType`,
+      new: `${ROOTS.DASHBOARD}/documentType/new`,
+      list: `${ROOTS.DASHBOARD}/documentType/list`,
+      edit: (id) => `${ROOTS.DASHBOARD}/documentType/${id}/edit`,
+      view: (id) => `${ROOTS.DASHBOARD}/documentType/${id}/view`,
     },
     product: {
       root: `${ROOTS.DASHBOARD}/product`,

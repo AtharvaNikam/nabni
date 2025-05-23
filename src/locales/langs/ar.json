@@ -146,5 +146,13 @@
   "edit_profile": "تعديل الملف الشخصي",
   "edit_email": "تعديل البريد الإلكتروني",
   "max_file_size": "الحجم الأقصى {{size}}",
-  "allowed_file_types": "الملفات المسموح بها *.jpeg، *.jpg، *.png، *.gif"
+  "allowed_file_types": "الملفات المسموح بها *.jpeg، *.jpg، *.png، *.gif",
+  "document_type": "نوع المستند",
+  "new_document_type": "نوع مستند جديد",
+  "quick_edit": "تعديل سريع",
+  "search": "بحث",
+  "dense": "عرض مضغوط",
+  "create_a_new": "إنشاء جديد",
+  "new": "جديد",
+  "masters": "البيانات الرئيسية"
 }

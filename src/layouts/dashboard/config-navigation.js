@@ -43,6 +43,7 @@ const ICONS = {
   ecommerce: icon('ic_ecommerce'),
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
+  documentType: icon('ic_documentType'),
 };
 
 // ----------------------------------------------------------------------
@@ -60,6 +61,17 @@ export function useNavData() {
           { title: t('overview'), path: paths.dashboard.root, icon: ICONS.dashboard },
           { title: t('upload_document'), path: paths.dashboard.uploadDocument, icon: ICONS.file },
           { title: t('documents'), path: paths.dashboard.documents, icon: ICONS.file },
+        ],
+      },
+
+      {
+        subheader: t('masters'),
+        items: [
+          {
+            title: t('document_type'),
+            path: paths.dashboard.documentType.root,
+            icon: ICONS.documentType,
+          },
         ],
       },
     ],

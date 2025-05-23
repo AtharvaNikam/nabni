@@ -47,6 +47,10 @@ export const endpoints = {
     latest: '/api/post/latest',
     search: '/api/post/search',
   },
+  documentType: {
+    list: '/api/document-types',
+    details: (id) => `/api/document-types/${id}`,
+  },
   product: {
     list: '/api/product/list',
     details: '/api/product/details',
