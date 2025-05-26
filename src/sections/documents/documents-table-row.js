@@ -14,7 +14,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
 // components
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { ConfirmDialog } from 'src/components/custom-dialog';
@@ -23,8 +22,32 @@ import { useNavigate } from 'react-router';
 import { paths } from 'src/routes/paths';
 import { useLocales } from 'src/locales';
 import { STATUS_COLOR_MAP } from 'src/utils/constants';
+import { Label } from '@mui/icons-material';
+import { Chip, styled } from '@mui/material';
 
 // ----------------------------------------------------------------------
+
+const ColoredChip = styled(Chip)(({ chipcolor, theme }) => {
+  // Only try augmentColor if chipcolor exists and is valid
+  let hoverBg;
+  if (chipcolor) {
+    try {
+      hoverBg = theme.palette.augmentColor({ main: chipcolor }).dark;
+    } catch {
+      // fallback if color is invalid
+      hoverBg = chipcolor;
+    }
+  }
+
+  return {
+    backgroundColor: chipcolor || theme.palette.grey[300],
+    color: theme.palette.getContrastText(chipcolor || theme.palette.grey[300]),
+    fontWeight: 'bold',
+    '&:hover': {
+      backgroundColor: hoverBg,
+    },
+  };
+});
 
 export default function DocumentsTableRow({
   row,
@@ -67,9 +90,7 @@ export default function DocumentsTableRow({
           />
         </TableCell>
         <TableCell>
-          <Label variant="soft" color={STATUS_COLOR_MAP[row.status] || 'default'}>
-            {row.status}
-          </Label>
+          <ColoredChip label={row.status} chipcolor={STATUS_COLOR_MAP[row.status]} size="small" />
         </TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
