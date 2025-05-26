@@ -51,6 +51,9 @@ export const endpoints = {
     list: '/api/document-types',
     details: (id) => `/api/document-types/${id}`,
   },
+  documents: {
+    list: '/api/document_files',
+  },
   product: {
     list: '/api/product/list',
     details: '/api/product/details',

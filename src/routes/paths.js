@@ -104,7 +104,6 @@ export const paths = {
     fileManager: `${ROOTS.DASHBOARD}/file-manager`,
     permission: `${ROOTS.DASHBOARD}/permission`,
     uploadDocument: `${ROOTS.DASHBOARD}/upload-documents`,
-    documents: `${ROOTS.DASHBOARD}/documents`,
     general: {
       app: `${ROOTS.DASHBOARD}/app`,
       ecommerce: `${ROOTS.DASHBOARD}/ecommerce`,
@@ -131,6 +130,13 @@ export const paths = {
       list: `${ROOTS.DASHBOARD}/documentType/list`,
       edit: (id) => `${ROOTS.DASHBOARD}/documentType/${id}/edit`,
       view: (id) => `${ROOTS.DASHBOARD}/documentType/${id}/view`,
+    },
+    documents: {
+      root: `${ROOTS.DASHBOARD}/documents`,
+      new: `${ROOTS.DASHBOARD}/documents/new`,
+      list: `${ROOTS.DASHBOARD}/documents/list`,
+      edit: (id) => `${ROOTS.DASHBOARD}/documents/${id}/edit`,
+      view: (id) => `${ROOTS.DASHBOARD}/documents/${id}/view`,
     },
     product: {
       root: `${ROOTS.DASHBOARD}/product`,

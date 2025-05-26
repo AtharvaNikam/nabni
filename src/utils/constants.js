@@ -379,12 +379,11 @@ export const COMMON_STATUS_OPTIONS = [
   { value: '0', label: 'In-Active' },
 ];
 
-export const RFQ_STATUS_OPTIONS = [
-  // { value: 0, label: 'Draft' },
-  { value: 1, label: 'Approved' },
-  { value: 2, label: 'Pending Approval' },
-  { value: 3, label: 'Rejected' },
-  { value: 4, label: 'Created' },
+export const DocumentsStatusOption = [
+  { value: 'Received', label: 'received' },
+  { value: 'Analyzing', label: 'analyzing' },
+  { value: 'Error', label: 'error' },
+  { value: 'Ready', label: 'ready' },
 ];
 
 export const ORDER_STATUS_OPTIONS = [
@@ -418,6 +417,13 @@ export const INVOICE_STATUS_OPTIONS = [
   { value: 3, label: 'Pending Approval' },
   { value: 4, label: 'Request Reupload' },
 ];
+
+export const STATUS_COLOR_MAP = {
+  Received: '#007BFF', // Blue
+  Analyzing: '#FFA500', // Orange
+  Error: '#FF0000', // Red
+  Ready: '#28A745', // Green
+};
 
 export const _roles = ['Admin', 'Worker', 'Qc Admin', 'Dispatch'];
 

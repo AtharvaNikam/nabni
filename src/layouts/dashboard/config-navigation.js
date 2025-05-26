@@ -59,8 +59,13 @@ export function useNavData() {
         subheader: t('dashboard'),
         items: [
           { title: t('overview'), path: paths.dashboard.root, icon: ICONS.dashboard },
-          { title: t('upload_document'), path: paths.dashboard.uploadDocument, icon: ICONS.file },
-          { title: t('documents'), path: paths.dashboard.documents, icon: ICONS.file },
+          // { title: t('upload_document'), path: paths.dashboard.uploadDocument, icon: ICONS.file },
+          // { title: t('documents'), path: paths.dashboard.documents, icon: ICONS.file },
+          {
+            title: t('documents'),
+            path: paths.dashboard.documents.list,
+            icon: ICONS.file,
+          },
         ],
       },
 

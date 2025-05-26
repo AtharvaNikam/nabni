@@ -41,6 +41,12 @@ const DocumentTypeListPage = lazy(() => import('src/pages/dashboard/documentType
 const DocumentTypeCreatePage = lazy(() => import('src/pages/dashboard/documentType/new'));
 const DocumentTypeEditPage = lazy(() => import('src/pages/dashboard/documentType/edit'));
 const DocumentTypeViewPage = lazy(() => import('src/pages/dashboard/documentType/view'));
+
+// DOCUMENTS
+const DocumentsListPage = lazy(() => import('src/pages/dashboard/documents/list'));
+const DocumentsCreatePage = lazy(() => import('src/pages/dashboard/documents/new'));
+const DocumentsEditPage = lazy(() => import('src/pages/dashboard/documents/edit'));
+const DocumentsViewPage = lazy(() => import('src/pages/dashboard/documents/view'));
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
@@ -101,6 +107,16 @@ export const dashboardRoutes = [
           { path: 'new', element: <UserCreatePage /> },
           { path: ':id/edit', element: <UserEditPage /> },
           { path: 'account', element: <UserAccountPage /> },
+        ],
+      },
+      {
+        path: 'documents',
+        children: [
+          { element: <DocumentsListPage />, index: true },
+          { path: 'list', element: <DocumentsListPage /> },
+          { path: 'new', element: <DocumentsCreatePage /> },
+          { path: ':id/edit', element: <DocumentsEditPage /> },
+          { path: ':id/view', element: <DocumentsViewPage /> },
         ],
       },
       {
@@ -179,7 +195,6 @@ export const dashboardRoutes = [
       { path: 'permission', element: <PermissionDeniedPage /> },
       { path: 'blank', element: <BlankPage /> },
       { path: 'upload-documents', element: <UploadDocumentsPage /> },
-      { path: 'documents', element: <DocumentsPage /> },
     ],
   },
 ];

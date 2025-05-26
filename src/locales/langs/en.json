@@ -155,5 +155,11 @@
   "dense": "Dense",
   "create_a_new": "Create a new",
   "new": "New",
-  "masters": "Masters"
+  "masters": "Masters",
+  "created_at": "Created At",
+  "all": "All",
+  "received": "Received",
+  "analyzing": "Analyzing",
+  "error": "Error",
+  "ready": "Ready"
 }
