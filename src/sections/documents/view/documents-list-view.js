@@ -263,7 +263,7 @@ export default function DocumentsListView() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={confirm.onTrue}
+                  onClick={()=>{console.log('here')}}
                   sx={{
                     borderColor: '#FFFFFF',
                     color: '#FFFFFF',
