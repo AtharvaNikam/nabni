@@ -51,7 +51,7 @@ export default function TableSelectedAction({
         sx={{
           ml: 2,
           flexGrow: 1,
-          color: 'primary.main',
+          color: '#fff',
           ...(dense && {
             ml: 3,
           }),

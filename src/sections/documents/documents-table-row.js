@@ -90,9 +90,9 @@ export default function DocumentsTableRow({
   return (
     <>
       <TableRow hover selected={selected}>
-        {/* <TableCell padding="checkbox">
+        <TableCell padding="checkbox">
           <Checkbox checked={selected} onClick={onSelectRow} />
-        </TableCell> */}
+        </TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{file_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{type_name}</TableCell>

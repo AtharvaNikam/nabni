@@ -260,11 +260,21 @@ export default function DocumentsListView() {
                 )
               }
               action={
-                <Tooltip title="Delete">
-                  <IconButton color="primary" onClick={confirm.onTrue}>
-                    <Iconify icon="solar:trash-bin-trash-bold" />
-                  </IconButton>
-                </Tooltip>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={confirm.onTrue}
+                  sx={{
+                    borderColor: '#FFFFFF',
+                    color: '#FFFFFF',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: '#FFFFFF',
+                    },
+                  }}
+                >
+                  Process
+                </Button>
               }
             />
 
@@ -283,7 +293,6 @@ export default function DocumentsListView() {
                       tableData.map((row) => row.id)
                     )
                   }
-                  showCheckbox={false}
                 />
 
                 <TableBody>
