@@ -34,7 +34,7 @@ export default function DocumentTypeTableRow({
   const navigate = useNavigate();
   const { t } = useLocales();
 
-  const { type, description } = row;
+  const { type, description, created_at, is_active } = row;
 
   const confirm = useBoolean();
 
@@ -52,8 +52,8 @@ export default function DocumentTypeTableRow({
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{description}</TableCell>
         {/* <TableCell>
           <ListItemText
-            primary={format(new Date(createdAt), 'dd MMM yyyy')}
-            secondary={format(new Date(createdAt), 'p')}
+            primary={format(new Date(created_at), 'dd MMM yyyy')}
+            secondary={format(new Date(created_at), 'p')}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
             secondaryTypographyProps={{
               mt: 0.5,
@@ -61,15 +61,15 @@ export default function DocumentTypeTableRow({
               typography: 'caption',
             }}
           />
-        </TableCell>
+        </TableCell> */}
         <TableCell>
           <Label
             variant="soft"
-            color={(isActive && 'success') || (!isActive && 'error') || 'default'}
+            color={(is_active && 'success') || (!is_active && 'error') || 'default'}
           >
-            {isActive ? 'Active' : 'Non-Active'}
+            {is_active ? 'Active' : 'Non-Active'}
           </Label>
-        </TableCell> */}
+        </TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
           <Tooltip title={t('quick_edit')} placement="top" arrow>

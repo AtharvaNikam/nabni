@@ -160,5 +160,7 @@
   "received": "تم الاستلام",
   "analyzing": "جارٍ التحليل",
   "error": "خطأ",
-  "ready": "جاهز"
+  "ready": "جاهز",
+  "property_name": "اسم العقار",
+  "create_property": "إنشاء عقار"
 }

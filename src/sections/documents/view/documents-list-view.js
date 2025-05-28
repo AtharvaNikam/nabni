@@ -173,7 +173,7 @@ export default function DocumentsListView() {
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.uploadDocument}
+              href={paths.dashboard.documents.new}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >

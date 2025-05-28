@@ -66,15 +66,22 @@ export default function AccountGeneral() {
   });
 
   const handleDrop = useCallback(
-    (acceptedFiles) => {
+    async (acceptedFiles) => {
       const file = acceptedFiles[0];
-
-      const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      });
+      console.log(file);
+      // const newFile = Object.assign(file, {
+      //   preview: URL.createObjectURL(file),
+      // });
 
       if (file) {
-        setValue('photoURL', newFile, { shouldValidate: true });
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await axiosInstance.post('/upload-static-file', formData);
+        const { data } = response;
+        console.log(data);
+        setValue('photoURL', data?.files[0].fileUrl, {
+          shouldValidate: true,
+        });
       }
     },
     [setValue]

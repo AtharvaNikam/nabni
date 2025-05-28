@@ -19,17 +19,17 @@ export default function DocumentsCreateView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
-        heading={`${t('create_a_new')} ${t('document_type')}`}
+        heading={`${t('new')} ${t('documents')}`}
         links={[
           {
             name: t('dashboard'),
             href: paths.dashboard.root,
           },
           {
-            name: t('document_type'),
+            name: t('documents'),
             href: paths.dashboard.documents.root,
           },
-          { name: `${t('new')} ${t('document_type')}` },
+          { name: `${t('new')} ${t('documents')}` },
         ]}
         sx={{
           mb: { xs: 3, md: 5 },

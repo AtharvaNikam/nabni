@@ -52,7 +52,7 @@ export default function DocumentTypeNewEditForm({ currentDocumentType }) {
     () => ({
       documentType: currentDocumentType?.type || '',
       description: currentDocumentType?.description || '',
-      isActive: currentDocumentType ? (currentDocumentType?.isActive ? '1' : '0') : '1',
+      isActive: currentDocumentType ? (currentDocumentType?.is_active ? '1' : '0') : '1',
     }),
     [currentDocumentType]
   );
@@ -80,7 +80,7 @@ export default function DocumentTypeNewEditForm({ currentDocumentType }) {
       const inputData = {
         doc_type: formData.documentType,
         description: formData.description,
-        // isActive: currentDocumentType ? formData.isActive : true,
+        is_active: currentDocumentType ? formData.isActive : true,
       };
 
       if (!currentDocumentType) {
@@ -112,7 +112,7 @@ export default function DocumentTypeNewEditForm({ currentDocumentType }) {
         <Grid item xs={12} md={12}>
           <Card sx={{ p: 3 }}>
             <Grid container spacing={2}>
-              {/* {currentDocumentType && (
+              {currentDocumentType && (
                 <>
                   <Grid item xs={12} sm={6}>
                     <RHFSelect name="isActive" label="Status">
@@ -125,7 +125,7 @@ export default function DocumentTypeNewEditForm({ currentDocumentType }) {
                   </Grid>
                   <Grid item xs={12} sm={6} />
                 </>
-              )} */}
+              )}
 
               <Grid item xs={12} sm={6}>
                 <RHFTextField name="documentType" label={t('document_type')} />

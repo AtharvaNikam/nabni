@@ -33,7 +33,7 @@
   "management": "management",
   "menu_level": "menu level",
   "item_label": "item label",
-  "description": "description",
+  "description": "Description",
   "other_cases": "other cases",
   "item_caption": "item caption",
   "file_manager": "File Manager",
@@ -161,5 +161,8 @@
   "received": "Received",
   "analyzing": "Analyzing",
   "error": "Error",
-  "ready": "Ready"
+  "ready": "Ready",
+  "property_name": "Property Name",
+  "create_property": "Create Property"
+
 }

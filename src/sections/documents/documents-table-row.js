@@ -66,6 +66,27 @@ export default function DocumentsTableRow({
 
   const popover = usePopover();
 
+  const handleDownload = async (url) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_HOST_API}${url}`);
+
+      if (!response.ok) throw new Error('File not found');
+
+      const blob = await response.blob();
+
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = url.split('/').pop() || 'downloaded-file';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Download failed:', error);
+    }
+  };
+
   return (
     <>
       <TableRow hover selected={selected}>
@@ -100,7 +121,7 @@ export default function DocumentsTableRow({
             </IconButton>
           </Tooltip>
           <Tooltip title={t('download')} placement="top" arrow>
-            <IconButton color="secondary" href="" download>
+            <IconButton color="secondary" onClick={() => handleDownload(row?.file_url)}>
               <DownloadIcon />
             </IconButton>
           </Tooltip>

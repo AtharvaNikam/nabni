@@ -66,7 +66,7 @@ export default function DocumentTypeListView() {
   { id: 'type', label: t('document_type'), width: 180 },
   { id: 'description', label: t('description') },
   // { id: 'createdAt', label: 'Created At' },
-  // { id: 'status', label: 'Status', width: 100 },
+  { id: 'is_active', label: 'Status', width: 100 },
   { id: '', width: 88 },
 ];
   const settings = useSettingsContext();
