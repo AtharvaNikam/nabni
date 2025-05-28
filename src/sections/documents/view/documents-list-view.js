@@ -63,7 +63,7 @@ export default function DocumentsListView() {
   const TABLE_HEAD = [
     { id: 'file_name', label: t('name'), width: 180 },
     { id: 'type_name', label: t('document_type'), width: 180 },
-    { id: 'description', label: t('description') },
+    { id: 'property_name', label: t('property_name') },
     { id: 'created_at', label: t('created_at') },
     { id: 'status', label: t('status'), width: 100 },
     { id: '', width: 88 },

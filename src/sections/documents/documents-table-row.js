@@ -60,7 +60,7 @@ export default function DocumentsTableRow({
   const navigate = useNavigate();
   const { t } = useLocales();
 
-  const { type_name, file_name, description, created_at } = row;
+  const { type_name, file_name, property_name, created_at } = row;
 
   const confirm = useBoolean();
 
@@ -97,7 +97,7 @@ export default function DocumentsTableRow({
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{file_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{type_name}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{description}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{property_name}</TableCell>
         <TableCell>
           <ListItemText
             primary={format(new Date(created_at), 'dd MMM yyyy')}
