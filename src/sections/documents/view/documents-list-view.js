@@ -263,9 +263,7 @@ export default function DocumentsListView() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={() => {
-                    console.log('here');
-                  }}
+                  onClick={confirm.onTrue}
                   sx={{
                     borderColor: '#FFFFFF',
                     color: '#FFFFFF',
@@ -342,22 +340,17 @@ export default function DocumentsListView() {
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
-        content={
-          <>
-            Are you sure want to delete <strong> {table.selected.length} </strong> items?
-          </>
-        }
+        title={t('confirmation_heading')}
+        content={<>{t('confirmation_subheading')}</>}
         action={
           <Button
             variant="contained"
-            color="error"
+            color="success"
             onClick={() => {
-              handleDeleteRows();
               confirm.onFalse();
             }}
           >
-            Delete
+            {t('process')}
           </Button>
         }
       />

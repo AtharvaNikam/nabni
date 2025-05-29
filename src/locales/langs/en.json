@@ -177,5 +177,7 @@
   },
   "remove_all": "Remove All",
   "process": "Process",
-  "selected": "Selected"
+  "selected": "Selected",
+  "confirmation_heading": "Are you sure?",
+  "confirmation_subheading": "Once processed, documents cannot be reverted."
 }

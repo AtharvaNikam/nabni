@@ -176,5 +176,7 @@
   },
   "remove_all": "إزالة الكل",
   "process": "عملية",
-  "selected": "محدد"
+  "selected": "محدد",
+  "confirmation_heading": "هل أنت متأكد؟",
+  "confirmation_subheading": "بمجرد المعالجة، لا يمكن التراجع عن المستندات."
 }
