@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 // assets
 import { UploadIllustration } from 'src/assets/illustrations';
 //
+import { useLocales } from 'src/locales';
 import Iconify from '../iconify';
 //
 import RejectionFiles from './errors-rejection-files';
@@ -35,6 +36,7 @@ export default function Upload({
   sx,
   ...other
 }) {
+  const { t } = useLocales();
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
     multiple,
     disabled,
@@ -51,9 +53,9 @@ export default function Upload({
     <Stack spacing={3} alignItems="center" justifyContent="center" flexWrap="wrap">
       <UploadIllustration sx={{ width: 1, maxWidth: 200 }} />
       <Stack spacing={1} sx={{ textAlign: 'center' }}>
-        <Typography variant="h6">Drop or Select file</Typography>
+        <Typography variant="h6">{t('drop_or_select_file')}</Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Drop files here or click
+          {t('file_upload_start')}
           <Box
             component="span"
             sx={{
@@ -62,9 +64,9 @@ export default function Upload({
               textDecoration: 'underline',
             }}
           >
-            browse
+            {t('file_upload_browse')}
           </Box>
-          thorough your machine
+          {t('file_upload_end')}
         </Typography>
       </Stack>
     </Stack>
@@ -103,7 +105,7 @@ export default function Upload({
       <Stack direction="row" justifyContent="flex-end" spacing={1.5}>
         {onRemoveAll && (
           <Button color="inherit" variant="outlined" size="small" onClick={onRemoveAll}>
-            Remove All
+            {t('remove_all')}
           </Button>
         )}
 
@@ -114,7 +116,7 @@ export default function Upload({
             onClick={onUpload}
             startIcon={<Iconify icon="eva:cloud-upload-fill" />}
           >
-            Upload
+            {t('upload')}
           </Button>
         )}
       </Stack>

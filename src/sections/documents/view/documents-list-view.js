@@ -263,7 +263,9 @@ export default function DocumentsListView() {
                 <Button
                   variant="outlined"
                   color="primary"
-                  onClick={()=>{console.log('here')}}
+                  onClick={() => {
+                    console.log('here');
+                  }}
                   sx={{
                     borderColor: '#FFFFFF',
                     color: '#FFFFFF',
@@ -273,7 +275,7 @@ export default function DocumentsListView() {
                     },
                   }}
                 >
-                  Process
+                  {t('process')}
                 </Button>
               }
             />

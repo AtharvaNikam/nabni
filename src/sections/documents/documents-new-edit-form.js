@@ -180,7 +180,7 @@ export default function DocumentsNewEditForm() {
               <Stack spacing={3}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <RHFSelect name="documentType" label="Select File Type">
+                    <RHFSelect name="documentType" label={t('document_type')}>
                       {fileTypesOptions.map((option) => (
                         <MenuItem key={option.id} value={option.id}>
                           {option.type}
@@ -212,7 +212,7 @@ export default function DocumentsNewEditForm() {
                 {uploadedDocs.length > 0 && (
                   <Box>
                     <Typography variant="subtitle1" sx={{ mb: 1 }}>
-                      Uploaded Documents
+                      {t('uploaded_documents')}
                     </Typography>
                     <Grid container spacing={2}>
                       {uploadedDocs.map((doc, idx) => (
@@ -233,7 +233,9 @@ export default function DocumentsNewEditForm() {
                                     : 'orange',
                               }}
                             >
-                              {doc.status === 'Uploading' ? `${doc.progress}%` : doc.status}
+                              {doc.status === 'Uploading'
+                                ? `${doc.progress}%`
+                                : t(`file_status.${doc.status.toLowerCase()}`)}
                             </Typography>
                             <Box sx={{ width: 150 }}>
                               <LinearProgress
@@ -256,11 +258,13 @@ export default function DocumentsNewEditForm() {
                   </Box>
                 )}
 
-                <Box sx={{ mt: 3, textAlign: 'right' }}>
-                  <LoadingButton variant="contained" color="primary" onClick={handleFinish}>
-                    Finish
-                  </LoadingButton>
-                </Box>
+                {uploadedDocs.length > 0 && (
+                  <Box sx={{ mt: 3, textAlign: 'right' }}>
+                    <LoadingButton variant="contained" color="primary" onClick={handleFinish}>
+                      {t('finish')}
+                    </LoadingButton>
+                  </Box>
+                )}
               </Stack>
             )}
           </Card>

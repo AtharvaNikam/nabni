@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
+import { useLocales } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -15,6 +16,7 @@ export default function TableSelectedAction({
   sx,
   ...other
 }) {
+  const { t } = useLocales();
   if (!numSelected) {
     return null;
   }
@@ -57,7 +59,7 @@ export default function TableSelectedAction({
           }),
         }}
       >
-        {numSelected} selected
+        {numSelected} {t('selected')}
       </Typography>
 
       {action && action}

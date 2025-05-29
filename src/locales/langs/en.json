@@ -163,6 +163,19 @@
   "error": "Error",
   "ready": "Ready",
   "property_name": "Property Name",
-  "create_property": "Create Property"
-
+  "create_property": "Create Property",
+  "drop_or_select_file": "Drop or Select file",
+  "file_upload_start": "Drop files here or click",
+  "file_upload_end": "through your machine",
+  "file_upload_browse": "browse",
+  "finish": "Finish",
+  "uploaded_documents": "Uploaded Documents",
+  "file_status": {
+    "uploaded": "Uploaded",
+    "failed": "Failed",
+    "uploading": "Uploading"
+  },
+  "remove_all": "Remove All",
+  "process": "Process",
+  "selected": "Selected"
 }

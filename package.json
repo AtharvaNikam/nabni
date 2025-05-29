@@ -1,8 +1,8 @@
 {
-  "name": "@nabmni-kit/cra-js",
-  "author": "Nabmni",
+  "name": "@nabni-kit/cra-js",
+  "author": "Nabni",
   "version": "5.1.0",
-  "description": "Nabmni",
+  "description": "Nabni",
   "private": true,
   "scripts": {
     "start": "react-scripts start",

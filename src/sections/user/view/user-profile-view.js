@@ -142,7 +142,7 @@ export default function UserProfileView() {
               }}
             >
               <img
-                src={user?.photoURL}
+                src={`${process.env.REACT_APP_HOST_API}/${user?.file_url}`}
                 alt={user?.username}
                 style={{ width: '100%', height: '100%' }}
               />

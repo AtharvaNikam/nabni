@@ -162,5 +162,19 @@
   "error": "خطأ",
   "ready": "جاهز",
   "property_name": "اسم العقار",
-  "create_property": "إنشاء عقار"
+  "create_property": "إنشاء عقار",
+  "drop_or_select_file": "أسقط الملف أو اختره",
+  "file_upload_start": "أسقط الملفات هنا أو انقر",
+  "file_upload_end": "من جهازك",
+  "file_upload_browse": "تصفح",
+  "finish": "إنهاء",
+  "uploaded_documents": "المستندات المرفوعة",
+  "file_status": {
+    "uploaded": "تم الرفع",
+    "failed": "فشل",
+    "uploading": "جارٍ الرفع"
+  },
+  "remove_all": "إزالة الكل",
+  "process": "عملية",
+  "selected": "محدد"
 }
