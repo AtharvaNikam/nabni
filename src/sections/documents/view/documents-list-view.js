@@ -1,5 +1,7 @@
 import isEqual from 'lodash/isEqual';
 import { useState, useCallback, useEffect } from 'react';
+import { useSnackbar } from 'notistack';
+import axiosInstance from 'src/utils/axios';
 // @mui
 import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
@@ -7,10 +9,9 @@ import Tabs from '@mui/material/Tabs';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
-import IconButton from '@mui/material/IconButton';
 import TableContainer from '@mui/material/TableContainer';
 // routes
 import { paths } from 'src/routes/paths';
@@ -38,7 +39,7 @@ import {
 } from 'src/components/table';
 //
 import { useGetDocumentss } from 'src/api/documents';
-import { useAuthContext } from 'src/auth/hooks';
+
 import { _roles, DocumentsStatusOption, STATUS_COLOR_MAP } from 'src/utils/constants';
 import { useLocales } from 'src/locales';
 import DocumentsTableToolbar from '../documents-table-toolbar';
@@ -58,6 +59,8 @@ const defaultFilters = {
 // ----------------------------------------------------------------------
 
 export default function DocumentsListView() {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const table = useTable({ defaultOrderBy: 'createdAt', defaultOrder: 'desc' });
   const { t } = useLocales();
   const TABLE_HEAD = [
@@ -78,7 +81,7 @@ export default function DocumentsListView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const { documents, documentsLoading, documentsEmpty, refreshDocuments } = useGetDocumentss();
+  const { documents, refreshDocuments } = useGetDocumentss();
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -118,16 +121,7 @@ export default function DocumentsListView() {
     [dataInPage.length, table, tableData]
   );
 
-  const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
-    setTableData(deleteRows);
 
-    table.onUpdatePageDeleteRows({
-      totalRows: tableData.length,
-      totalRowsInPage: dataInPage.length,
-      totalRowsFiltered: dataFiltered.length,
-    });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
 
   const handleEditRow = useCallback(
     (id) => {
@@ -252,11 +246,11 @@ export default function DocumentsListView() {
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
-              rowCount={tableData.length}
+              rowCount={tableData.filter(row => row.status === 'Received').length}
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  tableData.map((row) => row.id)
+                  tableData.filter(row => row.status === 'Received').map((row) => row.id)
                 )
               }
               action={
@@ -290,7 +284,7 @@ export default function DocumentsListView() {
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
                       checked,
-                      tableData.map((row) => row.id)
+                      tableData.filter(row => row.status === 'Received').map((row) => row.id)
                     )
                   }
                 />
@@ -343,15 +337,36 @@ export default function DocumentsListView() {
         title={t('confirmation_heading')}
         content={<>{t('confirmation_subheading')}</>}
         action={
-          <Button
+          <LoadingButton
+            loading={isProcessing}
             variant="contained"
             color="success"
-            onClick={() => {
-              confirm.onFalse();
+            onClick={async () => {
+              setIsProcessing(true);
+              try {
+                const selectedRows = tableData.filter((row) => table.selected.includes(row.id));
+                const payload = selectedRows.map(row => ({
+                  id: row.id,
+                  property_type_id: row.property_type_id,
+                  doc_type_id: row.document_type_id
+                }));
+                console.log(payload);
+                // eslint-disable-next-line no-unreachable
+                await axiosInstance.post('/process-documents', { documents: payload });
+                refreshDocuments();
+                table.onSelectAllRows(false, []);
+                enqueueSnackbar(t('documents_processed_successfully'), { variant: 'success' });
+                confirm.onFalse();
+              } catch (error) {
+                console.error('Processing error:', error);
+                enqueueSnackbar(error.message || t('error_processing_documents'), { variant: 'error' });
+              } finally {
+                setIsProcessing(false);
+              }
             }}
           >
             {t('process')}
-          </Button>
+          </LoadingButton>
         }
       />
     </>
@@ -361,7 +376,6 @@ export default function DocumentsListView() {
 // ----------------------------------------------------------------------
 
 function applyFilter({ inputData, comparator, filters }) {
-  console.log(inputData);
   const { name, status, role } = filters;
   const stabilizedThis = inputData.map((el, index) => [el, index]);
   const roleMapping = {

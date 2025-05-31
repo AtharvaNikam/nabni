@@ -18,11 +18,8 @@ import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router';
-import { paths } from 'src/routes/paths';
 import { useLocales } from 'src/locales';
 import { STATUS_COLOR_MAP } from 'src/utils/constants';
-import { Label } from '@mui/icons-material';
 import { Chip, styled } from '@mui/material';
 
 // ----------------------------------------------------------------------
@@ -57,7 +54,7 @@ export default function DocumentsTableRow({
   onSelectRow,
   onDeleteRow,
 }) {
-  const navigate = useNavigate();
+
   const { t } = useLocales();
 
   const { type_name, file_name, property_name, created_at } = row;
@@ -91,7 +88,9 @@ export default function DocumentsTableRow({
     <>
       <TableRow hover selected={selected}>
         <TableCell padding="checkbox">
-          <Checkbox checked={selected} onClick={onSelectRow} />
+          {row.status === 'Received' && (
+            <Checkbox checked={selected} onClick={onSelectRow} />
+          )}
         </TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{file_name}</TableCell>

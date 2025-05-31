@@ -10,7 +10,6 @@ export function useGetDocumentss() {
   const URL = endpoints.documents.list;
 
   const { data, isLoading, error, isValidating, mutate } = useSWR(URL, fetcher);
-  console.log('data', data);
   const refreshDocuments = () => {
     // Use the `mutate` function to trigger a revalidation
     mutate();
