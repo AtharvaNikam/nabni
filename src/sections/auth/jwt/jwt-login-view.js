@@ -88,7 +88,7 @@ export default function JwtLoginView() {
         variant: 'success',
       });
       router.push(
-        `${paths.auth.jwt.loginOtpVerification}?identifier=${data.identifier}&loginType=${response.data.delivery_method}`
+        `${paths.auth.jwt.loginOtpVerification}?identifier=${data.identifier}&loginType=${response.data.delivery_method}&rememberMe=${rememberMe}`
       );
     } catch (error) {
       if (typeof error !== 'string' && error?.error?.statusCode === 500) {

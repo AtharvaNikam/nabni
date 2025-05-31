@@ -68,7 +68,7 @@ export default function DocumentsTableRow({
 
   const handleDownload = async (url) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_HOST_API}${url}`);
+      const response = await fetch(url);
 
       if (!response.ok) throw new Error('File not found');
 

@@ -59,24 +59,31 @@ export const isValidToken = (accessToken) => {
 export const tokenExpired = (exp) => {
   if (!exp) return;
 
-  // eslint-disable-next-line prefer-const
-  let expiredTimer;
+  // Clear any existing interval
+  if (window.tokenCheckInterval) {
+    clearInterval(window.tokenCheckInterval);
+  }
 
-  const currentTime = Date.now();
-
-  // Test token expires after 10s
-  // const timeLeft = currentTime + 10000 - currentTime; // ~10s
-  const timeLeft = exp * 1000 - currentTime;
-
-  clearTimeout(expiredTimer);
-
-  expiredTimer = setTimeout(() => {
+  // Check if token is already expired
+  const currentTime = Date.now() / 1000; // Convert to seconds to match JWT exp
+  
+  if (currentTime >= exp) {
     alert('Token expired');
-
     localStorage.removeItem('accessToken');
-
     window.location.href = paths.auth.jwt.login;
-  }, timeLeft);
+    return;
+  }
+
+  // Check token expiration every minute
+  window.tokenCheckInterval = setInterval(() => {
+    const now = Date.now() / 1000; // Convert to seconds to match JWT exp
+    if (now >= exp) {
+      clearInterval(window.tokenCheckInterval);
+      alert('Token expired');
+      localStorage.removeItem('accessToken');
+      window.location.href = paths.auth.jwt.login;
+    }
+  }, 60000); // Check every minute
 };
 
 // ----------------------------------------------------------------------
@@ -89,6 +96,7 @@ export const setSession = (accessToken) => {
 
     // This function below will handle when token is expired
     const decoded = jwtDecode(accessToken);
+    console.log(decoded);
     if (decoded && decoded.exp) {
       tokenExpired(decoded.exp);
     }

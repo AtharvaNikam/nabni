@@ -24,6 +24,7 @@ import { useLocales } from 'src/locales';
 import { Box, Card } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import axiosInstance from 'src/utils/axios';
+import { RememberMe } from '@mui/icons-material';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ export default function JwtLoginVerifyView() {
 
   const identifier = searchParams.get('identifier');
   const loginType = searchParams.get('loginType');
+  const rememberMe = searchParams.get('rememberMe')?.toLowerCase() === 'true';
 
   const { t } = useLocales();
   const { verifyLoginOtp } = useAuthContext();
@@ -81,7 +83,7 @@ export default function JwtLoginVerifyView() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       console.log(data);
-      await verifyLoginOtp(data.identifier, data.code);
+      await verifyLoginOtp(data.identifier, data.code, rememberMe);
     } catch (error) {
       console.log(error);
       const errorMessage = error?.message || 'Something went wrong. Please try again.';

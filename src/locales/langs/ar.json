@@ -178,5 +178,11 @@
   "process": "عملية",
   "selected": "محدد",
   "confirmation_heading": "هل أنت متأكد؟",
-  "confirmation_subheading": "بمجرد المعالجة، لا يمكن التراجع عن المستندات."
+  "confirmation_subheading": "بمجرد المعالجة، لا يمكن التراجع عن المستندات.",
+  "property_type": "نوع العقار",
+  "property_name_required": "اسم العقار مطلوب",
+  "property_type_required": "نوع العقار مطلوب",
+  "document_type_required": "نوع المستند مطلوب",
+  "select_at_least_one_file": "حدد ملف واحد على الأقل",
+  "unknown": "غير معروف"
 }

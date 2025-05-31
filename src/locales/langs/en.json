@@ -179,5 +179,11 @@
   "process": "Process",
   "selected": "Selected",
   "confirmation_heading": "Are you sure?",
-  "confirmation_subheading": "Once processed, documents cannot be reverted."
+  "confirmation_subheading": "Once processed, documents cannot be reverted.",
+  "property_type": "Property Type",
+  "property_name_required": "Property name is required",
+  "property_type_required": "Property type is required",
+  "document_type_required": "Document type is required",
+  "select_at_least_one_file": "Select at least one file",
+  "unknown": "Unknown"
 }

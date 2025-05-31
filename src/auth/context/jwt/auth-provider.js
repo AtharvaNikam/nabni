@@ -42,7 +42,7 @@ const reducer = (state, action) => {
       user: action.payload.user,
     };
   }
-   if (action.type === 'VERIFY_FORGOT_PASSWORD_OTP') {
+  if (action.type === 'VERIFY_FORGOT_PASSWORD_OTP') {
     return {
       ...state,
       otpResult: action.payload.otpResult,
@@ -184,10 +184,11 @@ export function AuthProvider({ children }) {
   }, []);
 
   // VERIFY LOGIN OTP
-  const verifyLoginOtp = useCallback(async (mobile_email, otp) => {
+  const verifyLoginOtp = useCallback(async (mobile_email, otp, remember_me = false) => {
     const data = {
       mobile_email,
       otp,
+      remember_me,
     };
 
     const response = await axios.post(endpoints.auth.verifyLoginOtp, data);
@@ -260,7 +261,16 @@ export function AuthProvider({ children }) {
       verifyForgotPasswordOtp,
       logout,
     }),
-    [login, logout, verifyRegisterOtp, verifyLoginOtp,verifyForgotPasswordOtp, register, state.user, status]
+    [
+      login,
+      logout,
+      verifyRegisterOtp,
+      verifyLoginOtp,
+      verifyForgotPasswordOtp,
+      register,
+      state.user,
+      status,
+    ]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

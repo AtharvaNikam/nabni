@@ -51,6 +51,10 @@ export const endpoints = {
     list: '/api/document-types',
     details: (id) => `/api/document-types/${id}`,
   },
+  propertyType: {
+    list: '/property',
+    details: (id) => `/property/${id}`,
+  },
   documents: {
     list: '/api/document_files',
   },

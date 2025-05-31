@@ -78,8 +78,8 @@ export default function AccountGeneral() {
         formData.append('file', file);
         const response = await axiosInstance.post('/upload-static-file', formData);
         const { data } = response;
-        console.log(data);
-        setValue('photoURL', data?.files[0].fileUrl, {
+        console.log(`${process.env.REACT_APP_HOST_API} ${data?.data?.file_url}`);
+        setValue('photoURL', `${process.env.REACT_APP_HOST_API}${data?.data?.file_url}`, {
           shouldValidate: true,
         });
       }
