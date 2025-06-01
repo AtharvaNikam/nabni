@@ -211,6 +211,7 @@ export default function DocumentsNewEditForm() {
                     }
                     onRemoveAll={() => setValue('multiUpload', [], { shouldValidate: true })}
                     onUpload={handleUpload}
+                    accept="*"
                   />
                 </Grid>
 

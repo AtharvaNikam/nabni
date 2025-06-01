@@ -6,7 +6,7 @@ import { fetcher, endpoints } from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
-export function useGetDocumentss() {
+export function useGetDocuments() {
   const URL = endpoints.documents.list;
 
   const { data, isLoading, error, isValidating, mutate } = useSWR(URL, fetcher);
@@ -27,7 +27,7 @@ export function useGetDocumentss() {
 
 // ----------------------------------------------------------------------
 
-export function useGetDocuments(documentsId) {
+export function useGetDocument(documentsId) {
   const URL = documentsId ? [endpoints.documents.details(documentsId)] : null;
   const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
 
@@ -42,4 +42,25 @@ export function useGetDocuments(documentsId) {
   );
 
   return memoizedValue;
+}
+
+export function useGetExtractedDocumentData(id) {
+  const URL = endpoints.documents.extractedData(id);
+  console.log(URL);
+
+  const { data, isLoading, error, isValidating, mutate } = useSWR(URL, fetcher);
+  console.log(data);
+  const refreshDocuments = () => {
+    // Use the `mutate` function to trigger a revalidation
+    mutate();
+  };
+
+  return {
+    documents: data?.data?.extracted_data_json || [],
+    documentsLoading: isLoading,
+    documentsError: error,
+    documentsValidating: isValidating,
+    documentsEmpty: !isLoading && !data?.data?.length,
+    refreshDocuments, // Include the refresh function separately
+  };
 }

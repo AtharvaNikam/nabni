@@ -57,6 +57,7 @@ export const endpoints = {
   },
   documents: {
     list: '/api/document_files',
+    extractedData: (id) => `/user/extracted-data/${id}`,
   },
   product: {
     list: '/api/product/list',

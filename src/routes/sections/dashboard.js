@@ -44,6 +44,9 @@ const DocumentTypeViewPage = lazy(() => import('src/pages/dashboard/documentType
 
 // DOCUMENTS
 const DocumentsListPage = lazy(() => import('src/pages/dashboard/documents/list'));
+const DocumentsExtractedDataPage = lazy(() =>
+  import('src/pages/dashboard/documents/extracted-data-view')
+);
 const DocumentsCreatePage = lazy(() => import('src/pages/dashboard/documents/new'));
 const DocumentsEditPage = lazy(() => import('src/pages/dashboard/documents/edit'));
 const DocumentsViewPage = lazy(() => import('src/pages/dashboard/documents/view'));
@@ -117,6 +120,7 @@ export const dashboardRoutes = [
           { path: 'new', element: <DocumentsCreatePage /> },
           { path: ':id/edit', element: <DocumentsEditPage /> },
           { path: ':id/view', element: <DocumentsViewPage /> },
+          { path: ':id/extracted-data', element: <DocumentsExtractedDataPage /> },
         ],
       },
       {

@@ -54,7 +54,6 @@ export default function DocumentsTableRow({
   onSelectRow,
   onDeleteRow,
 }) {
-
   const { t } = useLocales();
 
   const { type_name, file_name, property_name, created_at } = row;
@@ -88,9 +87,7 @@ export default function DocumentsTableRow({
     <>
       <TableRow hover selected={selected}>
         <TableCell padding="checkbox">
-          {row.status === 'Received' && (
-            <Checkbox checked={selected} onClick={onSelectRow} />
-          )}
+          {row.status === 'Received' && <Checkbox checked={selected} onClick={onSelectRow} />}
         </TableCell>
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{file_name}</TableCell>
@@ -114,11 +111,13 @@ export default function DocumentsTableRow({
         </TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
-          <Tooltip title={t('view')}>
-            <IconButton color="primary" href="">
-              <VisibilityIcon />
-            </IconButton>
-          </Tooltip>
+          {row.status === 'Ready' && (
+            <Tooltip title={t('view')}>
+              <IconButton color="primary" onClick={onViewRow}>
+                <VisibilityIcon />
+              </IconButton>
+            </Tooltip>
+          )}
           <Tooltip title={t('download')} placement="top" arrow>
             <IconButton color="secondary" onClick={() => handleDownload(row?.file_url)}>
               <DownloadIcon />

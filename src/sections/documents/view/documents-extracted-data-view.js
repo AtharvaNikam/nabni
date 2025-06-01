@@ -1,0 +1,56 @@
+// @mui
+import Container from '@mui/material/Container';
+// routes
+import { paths } from 'src/routes/paths';
+import { useParams } from 'src/routes/hook';
+// components
+import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+//
+import { useGetExtractedDocumentData } from 'src/api/documents';
+
+import { useLocales } from 'src/locales';
+import DocumentExtractedData from '../documents-extracted-data';
+
+// ----------------------------------------------------------------------
+
+export default function DocumentsExtractView() {
+  const { t } = useLocales();
+
+  const settings = useSettingsContext();
+
+  const params = useParams();
+
+  const { id } = params;
+
+  const { documents: extractedData } = useGetExtractedDocumentData(id);
+  console.log(extractedData);
+  return (
+    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+      <CustomBreadcrumbs
+        heading={t('view')}
+        links={[
+          {
+            name: t('dashboard'),
+            href: paths.dashboard.root,
+          },
+          {
+            name: t('document'),
+            href: paths.dashboard.documents.root,
+          },
+          {
+            name: 'Extracted Data',
+          },
+        ]}
+        sx={{
+          mb: { xs: 3, md: 5 },
+        }}
+      />
+
+      <DocumentExtractedData
+        pdfUrl="http://69.62.81.68:3034/files/20250601T062847892Z_611015889-Ejari.pdf"
+        extractedDataJson={extractedData}
+      />
+    </Container>
+  );
+}

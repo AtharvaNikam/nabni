@@ -38,7 +38,7 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 //
-import { useGetDocumentss } from 'src/api/documents';
+import { useGetDocuments } from 'src/api/documents';
 
 import { _roles, DocumentsStatusOption, STATUS_COLOR_MAP } from 'src/utils/constants';
 import { useLocales } from 'src/locales';
@@ -81,7 +81,7 @@ export default function DocumentsListView() {
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const { documents, refreshDocuments } = useGetDocumentss();
+  const { documents, refreshDocuments } = useGetDocuments();
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -121,8 +121,6 @@ export default function DocumentsListView() {
     [dataInPage.length, table, tableData]
   );
 
-
-
   const handleEditRow = useCallback(
     (id) => {
       router.push(paths.dashboard.documents.edit(id));
@@ -132,7 +130,7 @@ export default function DocumentsListView() {
 
   const handleViewRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.documents.view(id));
+      router.push(paths.dashboard.documents.extractedData(id));
     },
     [router]
   );
@@ -246,11 +244,11 @@ export default function DocumentsListView() {
             <TableSelectedAction
               dense={table.dense}
               numSelected={table.selected.length}
-              rowCount={tableData.filter(row => row.status === 'Received').length}
+              rowCount={tableData.filter((row) => row.status === 'Received').length}
               onSelectAllRows={(checked) =>
                 table.onSelectAllRows(
                   checked,
-                  tableData.filter(row => row.status === 'Received').map((row) => row.id)
+                  tableData.filter((row) => row.status === 'Received').map((row) => row.id)
                 )
               }
               action={
@@ -284,7 +282,7 @@ export default function DocumentsListView() {
                   onSelectAllRows={(checked) =>
                     table.onSelectAllRows(
                       checked,
-                      tableData.filter(row => row.status === 'Received').map((row) => row.id)
+                      tableData.filter((row) => row.status === 'Received').map((row) => row.id)
                     )
                   }
                 />
@@ -345,21 +343,23 @@ export default function DocumentsListView() {
               setIsProcessing(true);
               try {
                 const selectedRows = tableData.filter((row) => table.selected.includes(row.id));
-                const payload = selectedRows.map(row => ({
+                const payload = selectedRows.map((row) => ({
                   id: row.id,
                   property_type_id: row.property_type_id,
-                  doc_type_id: row.document_type_id
+                  document_type_id: row.document_type_id,
                 }));
                 console.log(payload);
                 // eslint-disable-next-line no-unreachable
-                await axiosInstance.post('/process-documents', { documents: payload });
+                await axiosInstance.post('/process-documents', payload);
                 refreshDocuments();
                 table.onSelectAllRows(false, []);
                 enqueueSnackbar(t('documents_processed_successfully'), { variant: 'success' });
                 confirm.onFalse();
               } catch (error) {
                 console.error('Processing error:', error);
-                enqueueSnackbar(error.message || t('error_processing_documents'), { variant: 'error' });
+                enqueueSnackbar(error.message || t('error_processing_documents'), {
+                  variant: 'error',
+                });
               } finally {
                 setIsProcessing(false);
               }
