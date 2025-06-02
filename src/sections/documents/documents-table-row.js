@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+
 
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -53,6 +55,7 @@ export default function DocumentsTableRow({
   onViewRow,
   onSelectRow,
   onDeleteRow,
+  onViewRiskyClause,
 }) {
   const { t } = useLocales();
 
@@ -111,6 +114,13 @@ export default function DocumentsTableRow({
         </TableCell>
 
         <TableCell align="right" sx={{ px: 1, whiteSpace: 'nowrap' }}>
+          {row.status === 'Ready' && (
+            <Tooltip title={t('risky_clauses')}>
+              <IconButton color="error" onClick={onViewRiskyClause}>
+                <ReportProblemIcon />
+              </IconButton>
+            </Tooltip>
+          )}
           {row.status === 'Ready' && (
             <Tooltip title={t('view')}>
               <IconButton color="primary" onClick={onViewRow}>
@@ -174,6 +184,7 @@ DocumentsTableRow.propTypes = {
   onEditRow: PropTypes.func,
   onViewRow: PropTypes.func,
   onSelectRow: PropTypes.func,
+  onViewRiskyClause: PropTypes.func,
   row: PropTypes.object,
   selected: PropTypes.bool,
 };

@@ -45,6 +45,7 @@ import { useLocales } from 'src/locales';
 import DocumentsTableToolbar from '../documents-table-toolbar';
 import DocumentsTableFiltersResult from '../documents-table-filters-result';
 import DocumentsTableRow from '../documents-table-row';
+import DocumentsRiskyClausesDialog from '../documents-risky-clauses-dialog';
 
 // ----------------------------------------------------------------------
 
@@ -80,6 +81,8 @@ export default function DocumentsListView() {
   const [tableData, setTableData] = useState([]);
 
   const [filters, setFilters] = useState(defaultFilters);
+  const [riskyClauseOpen, setRiskyClauseOpen] = useState(false);
+  const [riskyClauseSelectedRowId, setRiskyClauseSelectedRowId] = useState();
 
   const { documents, refreshDocuments } = useGetDocuments();
 
@@ -144,6 +147,11 @@ export default function DocumentsListView() {
 
   const handleResetFilters = useCallback(() => {
     setFilters(defaultFilters);
+  }, []);
+
+  const handleRiskyClauseClick = useCallback((id) => {
+    setRiskyClauseSelectedRowId(id);
+    setRiskyClauseOpen(true);
   }, []);
 
   useEffect(() => {
@@ -302,6 +310,7 @@ export default function DocumentsListView() {
                         onDeleteRow={() => handleDeleteRow(row.id)}
                         onEditRow={() => handleEditRow(row.id)}
                         onViewRow={() => handleViewRow(row.id)}
+                        onViewRiskyClause={() => handleRiskyClauseClick(row.id)}
                       />
                     ))}
 
@@ -368,6 +377,12 @@ export default function DocumentsListView() {
             {t('process')}
           </LoadingButton>
         }
+      />
+
+      <DocumentsRiskyClausesDialog
+        open={riskyClauseOpen}
+        onClose={() => setRiskyClauseOpen(false)}
+        docId={riskyClauseSelectedRowId}
       />
     </>
   );
