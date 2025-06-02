@@ -31,7 +31,8 @@ export default function DocumentsRiskyClausesDialog({ open, onClose, docId }) {
         const { data } = response;
         setClauses(data?.data || []);
       } catch (err) {
-        console.log(err.message);
+   
+        
         setError(err.message);
       } finally {
         setLoading(false);
