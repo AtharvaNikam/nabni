@@ -56,7 +56,8 @@ export const endpoints = {
     details: (id) => `/property/${id}`,
   },
   documents: {
-    list: '/api/document_files',
+    list: (filter) => `/api/user/documents_by_property${filter ? `?${filter}` : ''}`,
+    properties: '/api/user/properties',
     extractedData: (id) => `/user/extracted-data/${id}`,
   },
   product: {

@@ -6,8 +6,8 @@ import { fetcher, endpoints } from 'src/utils/axios';
 
 // ----------------------------------------------------------------------
 
-export function useGetDocuments() {
-  const URL = endpoints.documents.list;
+export function useGetDocuments(filter) {
+  const URL = !filter ? endpoints.documents.list : endpoints.documents.list(filter);
 
   const { data, isLoading, error, isValidating, mutate } = useSWR(URL, fetcher);
   const refreshDocuments = () => {
@@ -16,11 +16,11 @@ export function useGetDocuments() {
   };
 
   return {
-    documents: data?.data?.data || [],
+    documents: data?.data?.documents || [],
     documentsLoading: isLoading,
     documentsError: error,
     documentsValidating: isValidating,
-    documentsEmpty: !isLoading && !data?.data?.length,
+    documentsEmpty: !isLoading && !data?.data?.documents.length,
     refreshDocuments, // Include the refresh function separately
   };
 }
@@ -62,5 +62,26 @@ export function useGetExtractedDocumentData(id) {
     documentsValidating: isValidating,
     documentsEmpty: !isLoading && !data?.data?.length,
     refreshDocuments, // Include the refresh function separately
+  };
+}
+
+
+export function useGetProperties() {
+  const URL = endpoints.documents.properties;
+
+  const { data, isLoading, error, isValidating, mutate } = useSWR(URL, fetcher);
+  console.log(data);
+  const refreshProperties = () => {
+    // Use the `mutate` function to trigger a revalidation
+    mutate();
+  };
+
+  return {
+    properties: data?.data || [],
+    propertiesLoading: isLoading,
+    propertiesError: error,
+    propertiesValidating: isValidating,
+    propertiesEmpty: !isLoading && !data?.data?.length,
+    refreshProperties, // Include the refresh function separately
   };
 }

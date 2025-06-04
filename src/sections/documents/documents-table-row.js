@@ -96,7 +96,7 @@ export default function DocumentsTableRow({
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{file_name}</TableCell>
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{type_name}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{property_name}</TableCell>
+        {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{property_name}</TableCell> */}
         <TableCell>
           <ListItemText
             primary={format(new Date(created_at), 'dd MMM yyyy')}

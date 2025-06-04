@@ -135,6 +135,7 @@ export const paths = {
       root: `${ROOTS.DASHBOARD}/documents`,
       new: `${ROOTS.DASHBOARD}/documents/new`,
       list: `${ROOTS.DASHBOARD}/documents/list`,
+      documentsList: (id) => `${ROOTS.DASHBOARD}/documents/${id}/documents-list`,
       edit: (id) => `${ROOTS.DASHBOARD}/documents/${id}/edit`,
       view: (id) => `${ROOTS.DASHBOARD}/documents/${id}/view`,
       extractedData: (id) => `${ROOTS.DASHBOARD}/documents/${id}/extracted-data`,

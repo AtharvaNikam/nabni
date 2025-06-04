@@ -44,12 +44,12 @@ const DocumentTypeViewPage = lazy(() => import('src/pages/dashboard/documentType
 
 // DOCUMENTS
 const DocumentsListPage = lazy(() => import('src/pages/dashboard/documents/list'));
+const DocumentsPropertiesViewPage = lazy(() => import('src/pages/dashboard/documents/properties'));
 const DocumentsExtractedDataPage = lazy(() =>
   import('src/pages/dashboard/documents/extracted-data-view')
 );
 const DocumentsCreatePage = lazy(() => import('src/pages/dashboard/documents/new'));
 const DocumentsEditPage = lazy(() => import('src/pages/dashboard/documents/edit'));
-const DocumentsViewPage = lazy(() => import('src/pages/dashboard/documents/view'));
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
@@ -77,7 +77,6 @@ const PermissionDeniedPage = lazy(() => import('src/pages/dashboard/permission')
 // BLANK PAGE
 const BlankPage = lazy(() => import('src/pages/dashboard/blank'));
 const UploadDocumentsPage = lazy(() => import('src/pages/dashboard/upload-documents'));
-const DocumentsPage = lazy(() => import('src/pages/dashboard/documents'));
 
 // ----------------------------------------------------------------------
 
@@ -115,11 +114,11 @@ export const dashboardRoutes = [
       {
         path: 'documents',
         children: [
-          { element: <DocumentsListPage />, index: true },
-          { path: 'list', element: <DocumentsListPage /> },
+          { element: <DocumentsPropertiesViewPage />, index: true },
+          { path: 'list', element: <DocumentsPropertiesViewPage /> },
+          { path: ':id/documents-list', element: <DocumentsListPage /> },
           { path: 'new', element: <DocumentsCreatePage /> },
           { path: ':id/edit', element: <DocumentsEditPage /> },
-          { path: ':id/view', element: <DocumentsViewPage /> },
           { path: ':id/extracted-data', element: <DocumentsExtractedDataPage /> },
         ],
       },

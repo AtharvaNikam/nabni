@@ -15,7 +15,7 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 // routes
 import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hook';
+import { useParams, useRouter } from 'src/routes/hook';
 import { RouterLink } from 'src/routes/components';
 // _mock
 // hooks
@@ -60,6 +60,11 @@ const defaultFilters = {
 // ----------------------------------------------------------------------
 
 export default function DocumentsListView() {
+
+  const params = useParams();
+
+  const { id: propertyTypeId } = params;
+
   const [isProcessing, setIsProcessing] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const table = useTable({ defaultOrderBy: 'createdAt', defaultOrder: 'desc' });
@@ -67,7 +72,7 @@ export default function DocumentsListView() {
   const TABLE_HEAD = [
     { id: 'file_name', label: t('name'), width: 180 },
     { id: 'type_name', label: t('document_type'), width: 180 },
-    { id: 'property_name', label: t('property_name') },
+    // { id: 'property_name', label: t('property_name') },
     { id: 'created_at', label: t('created_at') },
     { id: 'status', label: t('status'), width: 100 },
     { id: '', width: 88 },
@@ -84,7 +89,8 @@ export default function DocumentsListView() {
   const [riskyClauseOpen, setRiskyClauseOpen] = useState(false);
   const [riskyClauseSelectedRowId, setRiskyClauseSelectedRowId] = useState();
 
-  const { documents, refreshDocuments } = useGetDocuments();
+  const filter = propertyTypeId ? `property_name_id=${propertyTypeId}` : '';
+  const { documents, refreshDocuments } = useGetDocuments(filter);
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -170,16 +176,6 @@ export default function DocumentsListView() {
             { name: t('documents'), href: paths.dashboard.documents.root },
             { name: t('list') },
           ]}
-          action={
-            <Button
-              component={RouterLink}
-              href={paths.dashboard.documents.new}
-              variant="contained"
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              {t('upload_document')}
-            </Button>
-          }
           sx={{
             mb: { xs: 3, md: 5 },
           }}
