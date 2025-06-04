@@ -23,8 +23,8 @@ export default function DocumentsExtractView() {
 
   const { id } = params;
 
-  const { documents: extractedData } = useGetExtractedDocumentData(id);
-  console.log(extractedData);
+  const { documents: extractedDocumentData } = useGetExtractedDocumentData(id);
+  console.log(extractedDocumentData);
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <CustomBreadcrumbs
@@ -48,8 +48,8 @@ export default function DocumentsExtractView() {
       />
 
       <DocumentExtractedData
-        pdfUrl="http://69.62.81.68:3034/files/20250601T062847892Z_611015889-Ejari.pdf"
-        extractedDataJson={extractedData}
+        pdfUrl={extractedDocumentData?.file_url}
+        extractedDataJson={extractedDocumentData?.extracted_data_json}
       />
     </Container>
   );

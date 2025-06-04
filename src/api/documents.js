@@ -56,7 +56,7 @@ export function useGetExtractedDocumentData(id) {
   };
 
   return {
-    documents: data?.data?.extracted_data_json || [],
+    documents: data?.data || [],
     documentsLoading: isLoading,
     documentsError: error,
     documentsValidating: isValidating,
