@@ -186,5 +186,8 @@
   "property_type_required": "Property type is required",
   "document_type_required": "Document type is required",
   "select_at_least_one_file": "Select at least one file",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "properties": "Properties",
+  "risky_clauses": "Risky Clauses",
+  "extracted_data": "Extracted Data"
 }

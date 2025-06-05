@@ -185,5 +185,8 @@
   "property_type_required": "نوع العقار مطلوب",
   "document_type_required": "نوع المستند مطلوب",
   "select_at_least_one_file": "حدد ملف واحد على الأقل",
-  "unknown": "غير معروف"
+  "unknown": "غير معروف",
+  "properties": "العقارات",
+  "risky_clauses": "البنود المحفوفة بالمخاطر",
+  "extracted_data": "البيانات المأخوذة"
 }

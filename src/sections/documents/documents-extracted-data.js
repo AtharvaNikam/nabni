@@ -5,6 +5,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import { useForm, FormProvider } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import { RHFTextField } from 'src/components/hook-form';
+import { useLocales } from 'src/locales';
 
 // Set worker path for pdfjs
 
@@ -13,6 +14,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 const FIXED_HEIGHT = 600;
 
 const DocumentExtractedData = ({ pdfUrl, extractedDataJson }) => {
+
+  const { t, currentLang } = useLocales();
   const methods = useForm();
   const { setValue } = methods;
   const [numPages, setNumPages] = useState(null);
@@ -65,14 +68,15 @@ const DocumentExtractedData = ({ pdfUrl, extractedDataJson }) => {
             }}
           >
             <Typography variant="h6" gutterBottom>
-              Extracted Data
+              {t('extracted_data')}
             </Typography>
             <form>
               {extractedDataJson?.map((item, index) => (
                 <RHFTextField
                   key={index}
-                  name={item.en_key}
-                  label={item.en_key}
+                  name={currentLang.value === 'ar' ? item.ar_key : item.en_key}
+                  label={currentLang.value === 'ar' ? item.ar_key : item.en_key}
+                  value={currentLang.value === 'ar' ? (item.ar_value || '') : (item.en_value || '')}
                   fullWidth
                   margin="normal"
                 />

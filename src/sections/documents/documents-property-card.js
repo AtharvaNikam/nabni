@@ -5,8 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { paths } from 'src/routes/paths';
 import HomeIcon from '@mui/icons-material/Home';
 import CategoryIcon from '@mui/icons-material/Category';
+import { useLocales } from 'src/locales';
 
 const DocumentsPropertyCard = ({ property }) => {
+    const { t } = useLocales();
     const navigate = useNavigate();
 
     const handleTitleClick = () => {
@@ -23,7 +25,7 @@ const DocumentsPropertyCard = ({ property }) => {
                     </Avatar>
                     <Box>
                         <Typography variant="caption" color="text.secondary">
-                            Property Name
+                            {t('property_name')}
                         </Typography>
                         <Typography
                             component="div"
@@ -42,7 +44,7 @@ const DocumentsPropertyCard = ({ property }) => {
                     </Avatar>
                     <Box>
                         <Typography variant="caption" color="text.secondary">
-                            Property Type
+                            {t('property_type')}
                         </Typography>
                         <Typography variant="subtitle1" color="text.primary">
                             {property.property_type_name}

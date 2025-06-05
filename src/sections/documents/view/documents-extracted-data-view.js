@@ -35,11 +35,11 @@ export default function DocumentsExtractView() {
             href: paths.dashboard.root,
           },
           {
-            name: t('document'),
+            name: t('documents'),
             href: paths.dashboard.documents.root,
           },
           {
-            name: 'Extracted Data',
+            name: t('extracted_data'),
           },
         ]}
         sx={{
