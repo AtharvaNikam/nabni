@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react/jsx-boolean-value */
+import React, { useState } from 'react';
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { useGetProperties } from 'src/api/documents';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
@@ -8,10 +9,23 @@ import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 import Iconify from 'src/components/iconify';
 import PropertyCard from '../documents-property-card';
+import DocumentsRiskyClausesDialog from '../documents-risky-clauses-dialog';
 
 const DocumentsPropertiesView = () => {
     const { properties: propertiesData, refreshProperties } = useGetProperties();
-    console.log(propertiesData);
+    const [riskyClauseSelectedRowId, setRiskyClauseSelectedRowId] = useState();
+    const [riskyClausesOpen, setRiskyClausesOpen] = useState(false);
+    console.log(riskyClauseSelectedRowId);
+    const handleOpenRiskyClauses = (propertyId) => {
+        console.log(propertyId);
+        setRiskyClauseSelectedRowId(propertyId);
+        setRiskyClausesOpen(true);
+    };
+
+    const handleCloseRiskyClauses = () => {
+        setRiskyClausesOpen(false);
+    };
+
     const { t } = useLocales();
     const settings = useSettingsContext();
     return (
@@ -42,7 +56,10 @@ const DocumentsPropertiesView = () => {
                     {propertiesData?.length > 0 ? (
                         propertiesData.map((property) => (
                             <Grid item xs={12} sm={6} md={4} key={property.id}>
-                                <PropertyCard property={property} />
+                                <PropertyCard
+                                    property={property}
+                                    onOpenRiskyClauses={handleOpenRiskyClauses}
+                                />
                             </Grid>
                         ))
                     ) : (
@@ -66,6 +83,13 @@ const DocumentsPropertiesView = () => {
                     )}
                 </Grid>
             </Box>
+
+            <DocumentsRiskyClausesDialog
+                open={riskyClausesOpen}
+                onClose={handleCloseRiskyClauses}
+                docId={riskyClauseSelectedRowId}
+                isCrossDocument
+            />
         </Container>
     );
 };

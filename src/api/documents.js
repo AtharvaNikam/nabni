@@ -70,7 +70,6 @@ export function useGetProperties() {
   const URL = endpoints.documents.properties;
 
   const { data, isLoading, error, isValidating, mutate } = useSWR(URL, fetcher);
-  console.log(data);
   const refreshProperties = () => {
     // Use the `mutate` function to trigger a revalidation
     mutate();
