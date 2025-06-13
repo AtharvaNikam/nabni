@@ -66,7 +66,7 @@ export default function DocumentsRiskyClausesDialog({ open, onClose, docId, isCr
   const getSeverityColor = (severity) => {
     // Convert to lowercase for case-insensitive comparison
     const severityLower = severity?.toLowerCase() || '';
-    
+
     // Check for English or Arabic severity values
     if (
       severityLower.includes('regulatory-critical') ||
@@ -75,21 +75,21 @@ export default function DocumentsRiskyClausesDialog({ open, onClose, docId, isCr
     ) {
       return 'error';
     }
-    
+
     if (
       severityLower.includes('high risk') ||
       severityLower.includes('خطير')
     ) {
       return 'warning';
     }
-    
+
     if (
       severityLower.includes('medium risk') ||
       severityLower.includes('متوسط')
     ) {
       return 'info';
     }
-    
+
     return 'default';
   };
 
@@ -106,7 +106,7 @@ export default function DocumentsRiskyClausesDialog({ open, onClose, docId, isCr
         ) : clauses.length === 0 ? (
           <Typography>{t('no_risky_clauses_found')}</Typography>
         ) : (
-          clauses.map((clause, index) => (
+          clauses && clauses.length > 0 && clauses.map((clause, index) => (
             <Card key={index} sx={{ mb: 2 }}>
               <CardContent>
                 <Stack direction="row" spacing={1} alignItems="center" mb={1}>
