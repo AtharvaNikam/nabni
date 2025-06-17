@@ -137,7 +137,7 @@ export function AuthProvider({ children }) {
       password,
       username,
       mobile,
-      role: 'Admin',
+      role: 'admin',
     };
 
     const response = await axios.post(endpoints.auth.register, data);
@@ -167,7 +167,7 @@ export function AuthProvider({ children }) {
 
     const { data: details } = response.data;
 
-    if (details.user && details.user.role === 'Admin') {
+    if (details.user && (details.user.role === 'admin' || details.user.role === 'super_admin')) {
       setSession(details.access_token); // set token in axios
       localStorage.setItem(STORAGE_KEY, details.access_token);
       localStorage.setItem(PERMISSION_KEY, details.user.role);
@@ -195,7 +195,7 @@ export function AuthProvider({ children }) {
 
     const { data: details } = response.data;
     console.log(details);
-    if (details.user && details.user.role === 'Admin') {
+    if (details.user && (details.user.role === 'admin' || details.user.role === 'super_admin')) {
       setSession(details.access_token); // set token in axios
       localStorage.setItem(STORAGE_KEY, details.access_token);
       localStorage.setItem(PERMISSION_KEY, details.user.role);

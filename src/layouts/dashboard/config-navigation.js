@@ -7,6 +7,7 @@ import { useLocales } from 'src/locales';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
+import { useAuthContext } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -51,8 +52,12 @@ const ICONS = {
 export function useNavData() {
   const { t } = useLocales();
 
-  const data = useMemo(
-    () => [
+  const { user } = useAuthContext();
+  console.log(user);
+  let data = [];
+
+  if (user && user.role === 'super_admin') {
+    data = [
       // OVERVIEW
       // ----------------------------------------------------------------------
       {
@@ -79,9 +84,27 @@ export function useNavData() {
           },
         ],
       },
-    ],
-    [t]
-  );
+    ];
+  }
+  if (user && user.role === 'admin') {
+    data = [
+      // OVERVIEW
+      // ----------------------------------------------------------------------
+      {
+        subheader: t('dashboard'),
+        items: [
+          { title: t('overview'), path: paths.dashboard.root, icon: ICONS.dashboard },
+          // { title: t('upload_document'), path: paths.dashboard.uploadDocument, icon: ICONS.file },
+          // { title: t('documents'), path: paths.dashboard.documents, icon: ICONS.file },
+          {
+            title: t('documents'),
+            path: paths.dashboard.documents.list,
+            icon: ICONS.file,
+          },
+        ],
+      },
+    ];
+  }
 
   return data;
 }
