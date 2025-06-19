@@ -66,6 +66,7 @@
   "login_with_otp": "تسجيل الدخول عبر OTP",
   "login_with_phone": "تسجيل الدخول عبر الهاتف",
   "login_with_email": "تسجيل الدخول عبر البريد الإلكتروني",
+  "sign_in_with_google": "تسجيل الدخول باستخدام جوجل",
   "sign_up_with_email": "التسجيل بالبريد الإلكتروني",
   "sign_up_with_phone": "التسجيل برقم الهاتف",
   "register": "تسجيل",

@@ -65,6 +65,7 @@
   "login_with_otp": "Login with OTP",
   "login_with_phone": "Login with Phone",
   "login_with_email": "Login with Email",
+  "sign_in_with_google": "Sign in with Google",
   "sign_up_with_email": "Sign up with Email",
   "sign_up_with_phone": "Sign up with phone Number",
   "register": "Register",

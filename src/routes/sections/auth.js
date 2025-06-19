@@ -24,6 +24,7 @@ const JwtVerifyRegisterOtpPage = lazy(() => import('src/pages/auth/jwt/verify-re
 const JwtVerifyLoginOtpPage = lazy(() => import('src/pages/auth/jwt/verify-login-otp'));
 const JwtForgotPasswordPage = lazy(() => import('src/pages/auth/jwt/forgot-password'));
 const JwtVerifyForgotPasswordPage = lazy(() => import('src/pages/auth/jwt/verify-forget-password-otp'));
+const JwtGoogleLoginPage = lazy(() => import('src/pages/auth/jwt/google-login'));
 
 // FIREBASE
 const FirebaseLoginPage = lazy(() => import('src/pages/auth/firebase/login'));
@@ -112,7 +113,7 @@ const authJwt = {
         </CompactLayout>
       ),
     },
-      {
+    {
       path: 'forgot-password-otp-verification',
       element: (
         <CompactLayout>
@@ -204,9 +205,20 @@ const authAuth0 = {
   ],
 };
 
+const authGoogle = {
+  path: 'google-verification',
+  element: (
+    <GuestGuard>
+      <Suspense fallback={<SplashScreen />}>
+        <JwtGoogleLoginPage />
+      </Suspense>
+    </GuestGuard>
+  ),
+};
+
 export const authRoutes = [
   {
     path: 'auth',
-    children: [authAmplify, authJwt, authFirebase, authAuth0],
+    children: [authAmplify, authJwt, authFirebase, authAuth0, authGoogle],
   },
 ];

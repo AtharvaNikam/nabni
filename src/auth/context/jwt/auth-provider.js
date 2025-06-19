@@ -240,6 +240,20 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  // for google login
+  const googleLogin = useCallback(async (accessToken, userProfile) => {
+    console.log('Logging with google');
+    localStorage.setItem(STORAGE_KEY, accessToken);
+    setSession(accessToken);
+
+    dispatch({
+      type: 'LOGIN',
+      payload: {
+        user: userProfile,
+      },
+    });
+  }, []);
+
   // ----------------------------------------------------------------------
 
   const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
@@ -257,19 +271,23 @@ export function AuthProvider({ children }) {
       login,
       register,
       verifyRegisterOtp,
+      initialize,
       verifyLoginOtp,
       verifyForgotPasswordOtp,
       logout,
+      googleLogin,
     }),
     [
       login,
       logout,
+      initialize,
       verifyRegisterOtp,
       verifyLoginOtp,
       verifyForgotPasswordOtp,
       register,
       state.user,
       status,
+      googleLogin
     ]
   );
 

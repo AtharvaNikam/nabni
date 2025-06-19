@@ -1,7 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axiosInstance from 'src/utils/axios';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -38,6 +39,21 @@ export default function JwtLoginView() {
   const { login } = useAuthContext();
   const router = useRouter();
   const { enqueueSnackbar } = useSnackbar();
+  const searchParams = useSearchParams();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const response = await axiosInstance.get('/auth/login-url');
+      if (response.data.auth_url) {
+        window.location.href = response.data.auth_url; // Redirect to Google OAuth URL
+      }
+    } catch (error) {
+      enqueueSnackbar(
+        error?.response?.data?.message || 'Failed to initiate Google Sign In',
+        { variant: 'error' }
+      );
+    }
+  };
 
   const password = useBoolean();
   const { t } = useLocales();
@@ -100,8 +116,8 @@ export default function JwtLoginView() {
           typeof error === 'string'
             ? error
             : error?.error?.message
-            ? error?.error?.message
-            : error?.message,
+              ? error?.error?.message
+              : error?.message,
           {
             variant: 'error',
           }
@@ -109,6 +125,16 @@ export default function JwtLoginView() {
       }
     }
   });
+
+  useEffect(() => {
+    const googleError = searchParams.get('googleError');
+    const errorMessage = searchParams.get('errorMessage');
+
+    if (googleError && errorMessage) {
+      enqueueSnackbar(errorMessage, { variant: 'error' });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   return (
     <Box
@@ -189,6 +215,24 @@ export default function JwtLoginView() {
               loading={methods.formState.isSubmitting}
             >
               {t('login')}
+            </LoadingButton>
+
+            <LoadingButton
+              fullWidth
+              variant="outlined"
+              color="inherit"
+              onClick={handleGoogleSignIn}
+              startIcon={<Iconify icon="devicon:google" width={24} />}
+              sx={{
+                color: 'text.primary',
+                borderColor: 'divider',
+                '&:hover': {
+                  borderColor: 'text.primary',
+                  bgcolor: 'action.hover',
+                },
+              }}
+            >
+              {t('sign_in_with_google') || 'Sign in with Google'}
             </LoadingButton>
 
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} mt={1}>
