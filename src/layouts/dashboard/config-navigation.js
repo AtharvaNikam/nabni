@@ -63,13 +63,14 @@ export function useNavData() {
       {
         subheader: t('dashboard'),
         items: [
-          { title: t('overview'), path: paths.dashboard.root, icon: ICONS.dashboard },
+          { title: t('overview'), path: paths.dashboard.root, icon: ICONS.dashboard, tourId: 'step-dashboard-nav', },
           // { title: t('upload_document'), path: paths.dashboard.uploadDocument, icon: ICONS.file },
           // { title: t('documents'), path: paths.dashboard.documents, icon: ICONS.file },
           {
             title: t('documents'),
             path: paths.dashboard.documents.list,
             icon: ICONS.file,
+            tourId: 'step-documents-nav',
           },
         ],
       },
@@ -81,6 +82,7 @@ export function useNavData() {
             title: t('document_type'),
             path: paths.dashboard.documentType.root,
             icon: ICONS.documentType,
+            tourId: 'step-doc-type-nav',
           },
         ],
       },

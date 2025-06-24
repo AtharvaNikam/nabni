@@ -15,7 +15,7 @@ import { StyledItem, StyledIcon, StyledDotIcon } from './styles';
 
 export default function NavItem({ item, open, depth, active, config, externalLink, ...other }) {
   const { title, path, icon, info, children, disabled, caption, roles } = item;
-
+  console.log('item', item);
   const subItem = depth !== 1;
 
   const renderContent = (
@@ -26,6 +26,7 @@ export default function NavItem({ item, open, depth, active, config, externalLin
       depth={depth}
       config={config}
       {...other}
+      data-tour={item.tourId || undefined}
     >
       <>
         {icon && <StyledIcon size={config.iconSize}>{icon}</StyledIcon>}

@@ -23,7 +23,7 @@ export default function OverviewAppView() {
   console.log('t(test_translation):', t('test_translation'));
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container maxWidth={settings.themeStretch ? false : 'xl'} data-tour="step-dashboard">
       <Grid container spacing={3}>
         <Grid xs={12} md={4}>
           <AppWidgetSummary
