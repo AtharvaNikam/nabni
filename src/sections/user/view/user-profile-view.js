@@ -23,6 +23,8 @@ import { useSnackbar } from 'notistack';
 import { useLocales } from 'src/locales';
 import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router';
+import { TASKS } from 'src/utils/constants';
+import UserProfileTasks from '../analytics-tasks';
 
 export default function UserProfileView() {
   const settings = useSettingsContext();
@@ -238,6 +240,10 @@ export default function UserProfileView() {
                 </Box>
               </Stack>
             </Card>
+          </Grid>
+
+          <Grid item xs={12}>
+            <UserProfileTasks title="Complete Profile" list={TASKS} />
           </Grid>
         </Grid>
       </Box>

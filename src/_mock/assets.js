@@ -442,15 +442,15 @@ export const _tags = [
 // ----------------------------------------------------------------------
 
 export const _taskNames = [
-  'Complete Project Proposal',
-  'Conduct Market Research',
-  'Design User Interface Mockups',
+  'Walkthrough Completed',
+  'Upload Your First Document',
+  'Update Your Phone Number',
+  'Process Your First Document',
+  'Update Website Copy',
   'Develop Backend API',
-  'Implement Authentication System',
   'Write Test Cases',
   'Perform Database Optimization',
   'Create Content Marketing Plan',
-  'Update Website Copy',
   'Conduct A/B Testing',
   'Create Social Media Graphics',
   'Optimize Website Performance',

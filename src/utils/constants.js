@@ -1,3 +1,5 @@
+import { paths } from 'src/routes/paths';
+
 export const states = [
   {
     id: '64801d78b256d628c606f57c',
@@ -424,6 +426,39 @@ export const STATUS_COLOR_MAP = {
   Error: '#FF0000', // Red
   Ready: '#28A745', // Green
 };
+
+export const TASKS = [
+  {
+    id: 'walkthrough',
+    label: 'Walkthrough Completed',
+    route: '',
+    status: 1,
+  },
+  {
+    id: 'upload-document',
+    label: 'Upload Your First Document',
+    route: paths.dashboard.documents.new,
+    status: 0,
+  },
+  {
+    id: 'update-phone',
+    label: 'Update Your Phone Number',
+    route: paths.dashboard.user.account,
+    status: 0,
+  },
+  {
+    id: 'process-document',
+    label: 'Process Your First Document',
+    route: paths.dashboard.documents.list,
+    status: 0,
+  },
+  {
+    id: 'update-copy',
+    label: 'Update Website Copy',
+    route: '/content/website',
+    status: 0,
+  },
+];
 
 export const _roles = ['Admin', 'Worker', 'Qc Admin', 'Dispatch'];
 

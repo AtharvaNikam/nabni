@@ -11,6 +11,7 @@ import { useSettingsContext } from 'src/components/settings';
 import AppAreaInstalled from '../app-area-installed';
 import AppWidgetSummary from '../app-widget-summary';
 import AppCurrentDownload from '../app-current-download';
+import AppProfileCompletionBar from '../app-profile-completion-bar';
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +26,9 @@ export default function OverviewAppView() {
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'} data-tour="step-dashboard">
       <Grid container spacing={3}>
+        <Grid xs={12}>
+          <AppProfileCompletionBar percent={76} />
+        </Grid>
         <Grid xs={12} md={4}>
           <AppWidgetSummary
             title={t('number_of_active_users')}
