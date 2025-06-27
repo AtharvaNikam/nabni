@@ -196,7 +196,7 @@ export function AuthProvider({ children }) {
     const { data: details } = response.data;
     console.log(details);
     if (details.user && (details.user.role === 'admin' || details.user.role === 'super_admin')) {
-      setSession(details.access_token); // set token in axios
+      setSession(details.access_token);
       localStorage.setItem(STORAGE_KEY, details.access_token);
       localStorage.setItem(PERMISSION_KEY, details.user.role);
     } else {
@@ -243,13 +243,22 @@ export function AuthProvider({ children }) {
   // for google login
   const googleLogin = useCallback(async (accessToken, userProfile) => {
     console.log('Logging with google');
-    localStorage.setItem(STORAGE_KEY, accessToken);
-    setSession(accessToken);
+    if (
+      userProfile.user &&
+      (userProfile.user.role === 'admin' || userProfile.user.role === 'super_admin')
+    ) {
+      localStorage.setItem(STORAGE_KEY, accessToken);
+      localStorage.setItem(PERMISSION_KEY, userProfile.user.role);
+
+      setSession(accessToken);
+    } else {
+      throw new Error("User doesn't have permission");
+    }
 
     dispatch({
-      type: 'LOGIN',
+      type: 'VERIFY_REGISTER_OTP',
       payload: {
-        user: userProfile,
+        user: userProfile.user,
       },
     });
   }, []);
@@ -287,7 +296,7 @@ export function AuthProvider({ children }) {
       register,
       state.user,
       status,
-      googleLogin
+      googleLogin,
     ]
   );
 
