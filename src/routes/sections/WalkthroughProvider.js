@@ -1,32 +1,37 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable consistent-return */
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  createContext,
-  useContext,
-  useMemo,
-} from 'react';
+import React, { useEffect, useState, useCallback, createContext, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Joyride from 'react-joyride';
 import { useLocation } from 'react-router-dom';
+import FullScreenIntro from 'src/components/walkthrough/FullScreenIntro';
 
 const WalkthroughContext = createContext();
 export const useWalkthrough = () => useContext(WalkthroughContext);
 
-// Define steps (remove `route`)
 const steps = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Walkthrough',
+    content:
+      'Seems like it’s your first time here. Follow this quick walkthrough to know how get around. ',
+    disableBeacon: true,
+  },
   {
     target: '[data-tour="step-dashboard-nav"]',
     content: 'Click to visit your Dashboard.',
+    disableBeacon: true,
   },
   {
     target: '[data-tour="step-doc-type-nav"]',
     content: 'Now click on Document Type to continue.',
+    disableBeacon: true,
   },
   {
     target: '[data-tour="step-documents-nav"]',
     content: 'These are your Documents.',
+    disableBeacon: true,
   },
 ];
 
@@ -36,36 +41,28 @@ export const WalkthroughProvider = ({ children }) => {
   const [canShowStep, setCanShowStep] = useState(false);
   const location = useLocation();
 
-  // Start walkthrough if not done
+  // Start walkthrough only when the first element is found
   useEffect(() => {
     const done = localStorage.getItem('walkthrough_done');
     if (!done) {
-      setRun(true);
+      const firstStepSelector = steps[0].target;
+
+      const waitForElement = () => {
+        const el = document.querySelector(firstStepSelector);
+        if (el) {
+          setStepIndex(0);
+          setCanShowStep(true);
+          setRun(true);
+        } else {
+          setTimeout(waitForElement, 300);
+        }
+      };
+
+      waitForElement();
     }
   }, []);
 
-  // Wait for the current step's target element to exist
-  useEffect(() => {
-    if (!run || !steps[stepIndex]) return;
-
-    const targetSelector = steps[stepIndex].target;
-    const checkTarget = () => !!document.querySelector(targetSelector);
-
-    const waitForElement = () => {
-      if (checkTarget()) {
-        setCanShowStep(true);
-      } else {
-        const retry = setTimeout(waitForElement, 300);
-        return () => clearTimeout(retry);
-      }
-    };
-
-    setCanShowStep(false);
-    const cleanup = waitForElement();
-    return cleanup;
-  }, [stepIndex, location.pathname, run]);
-
-  // Handle Joyride callbacks
+  // Handle Joyride step progression
   const handleJoyrideCallback = useCallback((data) => {
     const { status, index, action, type } = data;
 
@@ -75,11 +72,6 @@ export const WalkthroughProvider = ({ children }) => {
       return;
     }
 
-    if (action === 'next') {
-      console.log('Next clicked at step index:', index);
-      console.log('Step data:', steps[index]);
-    }
-
     if (type === 'step:after' || action === 'next') {
       setTimeout(() => setStepIndex(index + 1), 0);
     } else if (action === 'prev') {
@@ -87,6 +79,7 @@ export const WalkthroughProvider = ({ children }) => {
     }
   }, []);
 
+  // Handle custom behavior for "Documents" step
   useEffect(() => {
     const currentStep = steps[stepIndex];
 
@@ -96,28 +89,20 @@ export const WalkthroughProvider = ({ children }) => {
       const waitForElement = () => {
         const el = document.querySelector(currentStep.target);
         if (el) {
-          console.log('✅ Found Documents element');
-
           const handleClick = () => {
-            console.log('✅ User clicked Documents');
             el.removeEventListener('click', handleClick);
-
-            // Optional: navigate
-            // navigate('/documents');
-
             setStepIndex((prev) => prev + 1);
           };
 
           el.addEventListener('click', handleClick);
-
-          // Clean up
           return () => el.removeEventListener('click', handleClick);
-        } if (retries < 10) {
-          // eslint-disable-next-line no-plusplus
+        }
+
+        if (retries < 10) {
           retries++;
-          setTimeout(waitForElement, 300); // retry again
+          setTimeout(waitForElement, 300);
         } else {
-          console.warn('❌ Could not find Documents element');
+          console.warn('Could not find Documents element');
         }
       };
 
@@ -125,10 +110,7 @@ export const WalkthroughProvider = ({ children }) => {
     }
   }, [stepIndex]);
 
-
-
-
-  // Memoized context value
+  // Provide method to restart walkthrough
   const contextValue = useMemo(
     () => ({
       startWalkthrough: () => {
@@ -142,12 +124,21 @@ export const WalkthroughProvider = ({ children }) => {
 
   return (
     <WalkthroughContext.Provider value={contextValue}>
-      {run && canShowStep && steps[stepIndex] && (
+      {/* Render custom component only at first step */}
+      {run && canShowStep && stepIndex === 0 && (
+        <FullScreenIntro
+          onStart={() => {
+            setStepIndex(1); // Move to next step
+          }}
+        />
+      )}
+
+      {/* Joyride starts from step 1 after intro */}
+      {run && canShowStep && stepIndex > 0 && steps[stepIndex] && (
         <Joyride
-          key={stepIndex}
+          key={`${stepIndex}-${run}-${canShowStep}`}
           steps={steps}
           run={run}
-          debug
           stepIndex={stepIndex}
           callback={handleJoyrideCallback}
           continuous
@@ -163,6 +154,7 @@ export const WalkthroughProvider = ({ children }) => {
           }}
         />
       )}
+
       {children}
     </WalkthroughContext.Provider>
   );
