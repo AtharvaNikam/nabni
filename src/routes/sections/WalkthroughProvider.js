@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Joyride from 'react-joyride';
 import { useLocation } from 'react-router-dom';
 import FullScreenIntro from 'src/components/walkthrough/FullScreenIntro';
+import { paths } from '../paths';
 
 const WalkthroughContext = createContext();
 export const useWalkthrough = () => useContext(WalkthroughContext);
@@ -41,9 +42,21 @@ export const WalkthroughProvider = ({ children }) => {
   const [canShowStep, setCanShowStep] = useState(false);
   const location = useLocation();
 
-  // Start walkthrough only when the first element is found
+  // Start walkthrough only when not on login screen
   useEffect(() => {
     const done = localStorage.getItem('walkthrough_done');
+
+    // Prevent walkthrough on login screen
+    const excludedPaths = [
+      paths.auth.jwt.login,
+      paths.auth.jwt.register,
+      paths.auth.jwt.forgotPassword,
+      paths.auth.jwt.forgotPasswordOtpVerification,
+      paths.auth.jwt.loginOtpVerification,
+      paths.auth.jwt.registerOtpVerification,
+    ];
+    if (excludedPaths.includes(location.pathname)) return;
+
     if (!done) {
       const firstStepSelector = steps[0].target;
 
@@ -60,7 +73,7 @@ export const WalkthroughProvider = ({ children }) => {
 
       waitForElement();
     }
-  }, []);
+  }, [location.pathname]);
 
   // Handle Joyride step progression
   const handleJoyrideCallback = useCallback((data) => {
