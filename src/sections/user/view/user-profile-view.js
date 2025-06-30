@@ -243,7 +243,7 @@ export default function UserProfileView() {
           </Grid>
 
           <Grid item xs={12}>
-            <UserProfileTasks title="Complete Profile" list={TASKS} />
+            <UserProfileTasks title={t('complete_profile')} list={TASKS} />
           </Grid>
         </Grid>
       </Box>

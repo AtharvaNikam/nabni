@@ -217,5 +217,12 @@
       "skip": "تخطي",
       "last": "إنهاء"
     }
-  }
+  },
+  "complete_profile":"الملف الشخصي الكامل",
+  "go":"اذهب",
+  "upload_your_first_document":"حمّل مستندك الأول",
+  "update_your_phone_number":"حدّث رقم هاتفك",
+  "process_your_first_document":"عالج مستندك الأول",
+  "update_website_copy":"حدّث محتوى الموقع",
+  "walkthrough_completed":"اكتمل العرض التوضيحي"
 }

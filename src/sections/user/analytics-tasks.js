@@ -14,6 +14,7 @@ import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
+import { t } from 'i18next';
 
 // ----------------------------------------------------------------------
 
@@ -105,7 +106,7 @@ function TaskItem({ task, checked, onChange }) {
             onClick={() => navigate(task.route)}
             disabled={checked}
           >
-            Go
+            {t('go')}
           </Button>
         )}
       </Stack>

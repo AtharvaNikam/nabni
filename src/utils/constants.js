@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { paths } from 'src/routes/paths';
 
 export const states = [
@@ -430,31 +431,31 @@ export const STATUS_COLOR_MAP = {
 export const TASKS = [
   {
     id: 'walkthrough',
-    label: 'Walkthrough Completed',
+    label: t('walkthrough_completed'),
     route: '',
     status: 1,
   },
   {
     id: 'upload-document',
-    label: 'Upload Your First Document',
+    label: t('upload_your_first_document'),
     route: paths.dashboard.documents.new,
     status: 0,
   },
   {
     id: 'update-phone',
-    label: 'Update Your Phone Number',
+    label: t('update_your_phone_number'),
     route: paths.dashboard.user.account,
     status: 0,
   },
   {
     id: 'process-document',
-    label: 'Process Your First Document',
+    label: t('process_your_first_document'),
     route: paths.dashboard.documents.list,
     status: 0,
   },
   {
     id: 'update-copy',
-    label: 'Update Website Copy',
+    label: t('update_website_copy'),
     route: '/content/website',
     status: 0,
   },

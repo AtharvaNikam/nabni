@@ -218,5 +218,12 @@
       "skip": "Skip",
       "last": "Finish"
     }
-  }
+  },
+  "complete_profile":"Complete Profile",
+  "go":"Go",
+  "upload_your_first_document":"Upload Your First Document",
+  "update_your_phone_number":"Update Your Phone Number",
+  "process_your_first_document":"Process Your First Document",
+  "update_website_copy":"Update Website Copy",
+  "walkthrough_completed":"Walkthrough Completed"
 }
