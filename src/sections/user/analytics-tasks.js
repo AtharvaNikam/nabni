@@ -14,7 +14,8 @@ import Iconify from 'src/components/iconify';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
-import { t } from 'i18next';
+import { useLocales } from 'src/locales';
+
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +57,8 @@ UserProfileTasks.propTypes = {
 function TaskItem({ task, checked, onChange }) {
   const popover = usePopover();
   const navigate = useNavigate();
+
+  const { t } = useLocales();
 
   const handleMarkComplete = () => {
     popover.onClose();

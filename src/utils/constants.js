@@ -428,38 +428,38 @@ export const STATUS_COLOR_MAP = {
   Ready: '#28A745', // Green
 };
 
-export const TASKS = [
-  {
-    id: 'walkthrough',
-    label: t('walkthrough_completed'),
-    route: '',
-    status: 1,
-  },
-  {
-    id: 'upload-document',
-    label: t('upload_your_first_document'),
-    route: paths.dashboard.documents.new,
-    status: 0,
-  },
-  {
-    id: 'update-phone',
-    label: t('update_your_phone_number'),
-    route: paths.dashboard.user.account,
-    status: 0,
-  },
-  {
-    id: 'process-document',
-    label: t('process_your_first_document'),
-    route: paths.dashboard.documents.list,
-    status: 0,
-  },
-  {
-    id: 'update-copy',
-    label: t('update_website_copy'),
-    route: '/content/website',
-    status: 0,
-  },
-];
+// export const TASKS = [
+//   {
+//     id: 'walkthrough',
+//     label: t('walkthrough_completed'),
+//     route: '',
+//     status: 1,
+//   },
+//   {
+//     id: 'upload-document',
+//     label: t('upload_your_first_document'),
+//     route: paths.dashboard.documents.new,
+//     status: 0,
+//   },
+//   {
+//     id: 'update-phone',
+//     label: t('update_your_phone_number'),
+//     route: paths.dashboard.user.account,
+//     status: 0,
+//   },
+//   {
+//     id: 'process-document',
+//     label: t('process_your_first_document'),
+//     route: paths.dashboard.documents.list,
+//     status: 0,
+//   },
+//   {
+//     id: 'update-copy',
+//     label: t('update_website_copy'),
+//     route: '/content/website',
+//     status: 0,
+//   },
+// ];
 
 export const _roles = ['Admin', 'Worker', 'Qc Admin', 'Dispatch'];
 

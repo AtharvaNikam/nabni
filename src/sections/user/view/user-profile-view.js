@@ -23,10 +23,41 @@ import { useSnackbar } from 'notistack';
 import { useLocales } from 'src/locales';
 import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router';
-import { TASKS } from 'src/utils/constants';
 import UserProfileTasks from '../analytics-tasks';
 
 export default function UserProfileView() {
+  const TASKS =  [
+  {
+    id: 'walkthrough',
+    label: t('walkthrough_completed'),
+    route: '',
+    status: 1,
+  },
+  {
+    id: 'upload-document',
+    label: t('upload_your_first_document'),
+    route: paths.dashboard.documents.new,
+    status: 0,
+  },
+  {
+    id: 'update-phone',
+    label: t('update_your_phone_number'),
+    route: paths.dashboard.user.account,
+    status: 0,
+  },
+  {
+    id: 'process-document',
+    label: t('process_your_first_document'),
+    route: paths.dashboard.documents.list,
+    status: 0,
+  },
+  {
+    id: 'update-copy',
+    label: t('update_website_copy'),
+    route: '/content/website',
+    status: 0,
+  },
+];
   const settings = useSettingsContext();
   const navigate = useNavigate();
 
