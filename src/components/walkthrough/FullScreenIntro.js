@@ -2,8 +2,11 @@
 import React from 'react';
 import { Box, Paper, Typography, Button } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useLocales } from 'src/locales';
 
 const FullScreenIntro = ({ onStart }) => {
+  const { t } = useLocales();
+
   console.log(onStart);
   return (
     <Box
@@ -29,10 +32,10 @@ const FullScreenIntro = ({ onStart }) => {
         }}
       >
         <Typography variant="h5" gutterBottom fontWeight="bold">
-          👋 Welcome to Nabni!
+          {t('walkthrough.welcomeTitle')}
         </Typography>
         <Typography variant="body1" sx={{ mb: 3 }}>
-          It looks like this is your first time. Let’s guide you around the platform.
+          {t('walkthrough.welcomeMessage')}
         </Typography>
         <Button
           variant="contained"
@@ -45,7 +48,7 @@ const FullScreenIntro = ({ onStart }) => {
             },
           }}
         >
-          🚀 Start Tour
+          {t('walkthrough.startButton')}
         </Button>
       </Paper>
     </Box>

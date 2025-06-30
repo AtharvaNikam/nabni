@@ -5,38 +5,53 @@ import PropTypes from 'prop-types';
 import Joyride from 'react-joyride';
 import { useLocation } from 'react-router-dom';
 import FullScreenIntro from 'src/components/walkthrough/FullScreenIntro';
+import { useAuthContext } from 'src/auth/hooks';
+import { useLocales } from 'src/locales';
 import { paths } from '../paths';
 
 const WalkthroughContext = createContext();
 export const useWalkthrough = () => useContext(WalkthroughContext);
 
-const steps = [
-  {
-    target: 'body',
-    placement: 'center',
-    title: 'Walkthrough',
-    content:
-      'Seems like it’s your first time here. Follow this quick walkthrough to know how get around. ',
-    disableBeacon: true,
-  },
-  {
-    target: '[data-tour="step-dashboard-nav"]',
-    content: 'Click to visit your Dashboard.',
-    disableBeacon: true,
-  },
-  {
-    target: '[data-tour="step-doc-type-nav"]',
-    content: 'Now click on Document Type to continue.',
-    disableBeacon: true,
-  },
-  {
-    target: '[data-tour="step-documents-nav"]',
-    content: 'These are your Documents.',
-    disableBeacon: true,
-  },
-];
-
 export const WalkthroughProvider = ({ children }) => {
+  const { t } = useLocales();
+  const { user } = useAuthContext();
+  console.log(user);
+  const steps = useMemo(() => {
+    const baseSteps = [
+      {
+        target: 'body',
+        placement: 'center',
+        title: t('walkthrough.steps.introTitle'),
+        content: t('walkthrough.steps.introContent'),
+        disableBeacon: true,
+      },
+      {
+        target: '[data-tour="step-dashboard-nav"]',
+        content: t('walkthrough.steps.dashboard'),
+        disableBeacon: true,
+      },
+    ];
+
+    // Conditionally include "doc-type" step
+    if (user?.role === 'super_admin') {
+      baseSteps.push({
+        target: '[data-tour="step-doc-type-nav"]',
+        content: t('walkthrough.steps.docType'),
+        disableBeacon: true,
+      });
+    }
+
+    // Always add the final step
+    baseSteps.push({
+      target: '[data-tour="step-documents-nav"]',
+      content: t('walkthrough.steps.documents'),
+      disableBeacon: true,
+    });
+
+    return baseSteps;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.role]);
+
   const [run, setRun] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [canShowStep, setCanShowStep] = useState(false);
@@ -73,24 +88,35 @@ export const WalkthroughProvider = ({ children }) => {
 
       waitForElement();
     }
-  }, [location.pathname]);
+  }, [location.pathname, steps]);
 
   // Handle Joyride step progression
-  const handleJoyrideCallback = useCallback((data) => {
-    const { status, index, action, type } = data;
+  const handleJoyrideCallback = useCallback(
+    (data) => {
+      const { status, index, action, type } = data;
 
-    if (['finished', 'skipped'].includes(status) || action === 'close') {
-      localStorage.setItem('walkthrough_done', 'true');
-      setRun(false);
-      return;
-    }
+      const isLastStep = index === steps.length - 1 && (action === 'next' || type === 'step:after');
+      if (isLastStep) {
+        localStorage.setItem('walkthrough_done', 'true');
+        setRun(false);
+        return;
+      }
 
-    if (type === 'step:after' || action === 'next') {
-      setTimeout(() => setStepIndex(index + 1), 0);
-    } else if (action === 'prev') {
-      setTimeout(() => setStepIndex(index - 1), 0);
-    }
-  }, []);
+      if (status === 'skipped' || status === 'finished') {
+        localStorage.setItem('walkthrough_done', 'true');
+        setRun(false);
+        return;
+      }
+
+      // Step navigation
+      if (type === 'step:after' || action === 'next') {
+        setTimeout(() => setStepIndex(index + 1), 0);
+      } else if (action === 'prev') {
+        setTimeout(() => setStepIndex(index - 1), 0);
+      }
+    },
+    [steps.length]
+  );
 
   // Handle custom behavior for "Documents" step
   useEffect(() => {
@@ -121,7 +147,7 @@ export const WalkthroughProvider = ({ children }) => {
 
       waitForElement();
     }
-  }, [stepIndex]);
+  }, [stepIndex, steps]);
 
   // Provide method to restart walkthrough
   const contextValue = useMemo(
@@ -157,13 +183,24 @@ export const WalkthroughProvider = ({ children }) => {
           continuous
           scrollToFirstStep
           showSkipButton
-          showProgress
+          showProgress={false}
           disableOverlayClose
           disableScrolling={false}
           styles={{
             options: {
               zIndex: 13000,
+              primaryColor: '#014D4E',
+              arrowColor: '#fff',
             },
+            buttonBack: {
+              display: 'none',
+            },
+          }}
+          locale={{
+            back: t('walkthrough.buttons.back'),
+            last: t('walkthrough.buttons.last'),
+            next: t('walkthrough.buttons.next'),
+            skip: t('walkthrough.buttons.skip'),
           }}
         />
       )}

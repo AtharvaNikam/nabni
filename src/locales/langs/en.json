@@ -200,5 +200,23 @@
   "unknown": "Unknown",
   "properties": "Properties",
   "risky_clauses": "Risky Clauses",
-  "extracted_data": "Extracted Data"
+  "extracted_data": "Extracted Data",
+  "walkthrough": {
+    "welcomeTitle": "👋 Welcome to Nabni!",
+    "welcomeMessage": "It looks like this is your first time. Let’s guide you around the platform.",
+    "startButton": "🚀 Start Tour",
+    "steps": {
+      "introTitle": "Walkthrough",
+      "introContent": "Seems like it’s your first time here. Follow this quick walkthrough to know how to get around.",
+      "dashboard": "Click here to access your dashboard.",
+      "docType": "Click here to access all the document types.",
+      "documents": "Click here to view all documents or upload a new one."
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back",
+      "skip": "Skip",
+      "last": "Finish"
+    }
+  }
 }
