@@ -65,4 +65,14 @@ export const endpoints = {
     details: '/api/product/details',
     search: '/api/product/search',
   },
+  user: {
+    list: '/users/list',
+    filterList: (filter) => `/users/list?${filter}`,
+    details: (id) => `/users/${id}`,
+  },
+  branch: {
+    list: '/branches',
+    filterList: (filter) => `/branches?${filter}`,
+    details: (id) => `/branches/${id}`,
+  },
 };

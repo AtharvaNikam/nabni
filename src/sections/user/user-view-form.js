@@ -37,7 +37,6 @@ import {
   Chip,
   FormControl,
   FormHelperText,
-  FormLabel,
   IconButton,
   InputAdornment,
   MenuItem,
@@ -46,51 +45,24 @@ import {
 import { states } from 'src/utils/constants';
 import axiosInstance from 'src/utils/axios';
 import { useBoolean } from 'src/hooks/use-boolean';
-import {  useGetBranchsWithFilter } from 'src/api/branch';
-import { useAuthContext } from 'src/auth/hooks';
+import { useGetBranchs } from 'src/api/branch';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/material.css';
 
 // ----------------------------------------------------------------------
 
-const allRoles = [
-  { value: 'super_admin', name: 'Super Admin' },
-  { value: 'admin', name: 'Admin' },
-  { value: 'cgm', name: 'CGM' },
-  { value: 'hod', name: 'HOD' },
-  { value: 'sub_hod', name: 'SUB HOD' },
-];
-
-export default function UserNewEditForm({ currentUser }) {
-  console.log(currentUser);
+export default function UserViewForm({ currentUser }) {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  console.log(isDark);
-  const { user } = useAuthContext();
-  const userRole = user?.permissions?.[0];
-  const roleOptions =
-    userRole === 'hod'
-      ? allRoles.filter((r) => r.value === 'sub_hod')
-      : userRole === 'cgm'
-      ? allRoles.filter((r) => r.value === 'hod' || r.value === 'sub_hod')
-      : allRoles;
-
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
   const password = useBoolean();
-  const rawFilter = {
-    where: {
-      isActive: true,
-    },
-  };
 
-  const encodedFilter = `filter=${encodeURIComponent(JSON.stringify(rawFilter))}`;
+  const { branches, branchesLoading, branchesEmpty, refreshBranches } = useGetBranchs();
 
-  const { filteredbranches: branches } = useGetBranchsWithFilter(encodedFilter);
-
-  const [departmentOptions, setDepartmentOptions] = useState([]);
+  const [departments, setDepartments] = useState([]);
 
   const [validationSchema, setValidationSchema] = useState(
     Yup.object().shape({
@@ -105,18 +77,14 @@ export default function UserNewEditForm({ currentUser }) {
             .min(6, 'Password must be at least 6 characters')
             .required('Password is required')
         : Yup.string(),
-
-      confirmPassword: Yup.string().when('password', {
-        is: (val) => val && val.length > 0,
-        then: (schema) =>
-          schema
+      confirmPassword: !currentUser
+        ? Yup.string()
             .required('Confirm password is required')
-            .oneOf([Yup.ref('password')], 'Passwords must match'),
-        otherwise: (schema) => schema.notRequired(),
-      }),
+            .oneOf([Yup.ref('password')], 'Passwords must match')
+        : Yup.string(),
       phoneNumber: Yup.string()
         .required('Phone number is required')
-        .matches(/^[0-9]{8,15}$/, 'Phone number must be between 8 and 15 digits'),
+        .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
       dob: Yup.string(),
       address: Yup.string(),
       state: Yup.string(),
@@ -162,19 +130,20 @@ export default function UserNewEditForm({ currentUser }) {
     setError,
     clearErrors,
     handleSubmit,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting },
   } = methods;
-
-  console.log(errors);
 
   const branch = watch('branch');
   const selectedDepartments = watch('departments');
   const values = watch();
   const role = watch('role');
 
+  console.log(role);
+
   const onSubmit = handleSubmit(async (formData) => {
     try {
       console.info('DATA', formData);
+
       const inputData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -240,16 +209,7 @@ export default function UserNewEditForm({ currentUser }) {
   );
 
   useEffect(() => {
-    if (role === 'cgm') {
-      setValidationSchema((prev) =>
-        prev.concat(
-          Yup.object().shape({
-            branch: Yup.object().required('Branch is required'),
-            departments: Yup.array().notRequired(),
-          })
-        )
-      );
-    } else if (role && role !== 'admin' && role !== 'super_admin') {
+    if (role && role !== 'admin' && role !== 'super_admin') {
       setValidationSchema((prev) =>
         prev.concat(
           Yup.object().shape({
@@ -274,25 +234,19 @@ export default function UserNewEditForm({ currentUser }) {
 
   useEffect(() => {
     if (!branch) {
-      setDepartmentOptions([]);
+      setDepartments([]);
       setValue('departments', []);
       return;
     }
 
     const fetchedDepartments = branch?.departments || [];
 
-    // Prevent overriding for HOD
-    if (userRole === 'hod') {
-      return;
-    }
+    setDepartments(fetchedDepartments);
 
-    setDepartmentOptions(fetchedDepartments);
-
-    // Only clear departments for new user if not HOD
     if (!currentUser) {
       setValue('departments', []);
     }
-  }, [branch, currentUser, setValue, userRole]);
+  }, [branch, currentUser, setValue]);
 
   useEffect(() => {
     if (role === 'admin') {
@@ -308,38 +262,6 @@ export default function UserNewEditForm({ currentUser }) {
   }, [currentUser, defaultValues, reset]);
 
   useEffect(() => {
-    if (!currentUser && (userRole === 'cgm' || userRole === 'hod') && user) {
-      const selectedBranch = user.branch || null;
-      const selectedUserDepartments = user.departments || [];
-
-      reset((prev) => ({
-        ...prev,
-        branch: selectedBranch,
-        departments: userRole === 'hod' ? selectedUserDepartments : [],
-      }));
-
-      const options =
-        userRole === 'hod' ? selectedUserDepartments : selectedBranch?.departments || [];
-
-      console.log('Setting departmentOptions:', options);
-      setDepartmentOptions(options);
-    }
-  }, [user, userRole, currentUser, reset]);
-
-  useEffect(() => {
-    if (!currentUser && (userRole === 'cgm' || userRole === 'hod') && user) {
-      const selectedBranch = user.branch || null;
-      const selectedUserDepartments = user.departments || [];
-
-      if (userRole === 'hod') {
-        setDepartmentOptions(selectedUserDepartments);
-      } else {
-        setDepartmentOptions(selectedBranch?.departments || []);
-      }
-    }
-  }, [user, userRole, currentUser]);
-
-  useEffect(() => {
     console.log('here12');
     document.body.classList.remove('light-mode', 'dark-mode');
     document.body.classList.add(isDark ? 'dark-mode' : 'light-mode');
@@ -348,7 +270,7 @@ export default function UserNewEditForm({ currentUser }) {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Grid container spacing={3}>
-        {/* <Grid xs={12} md={4}>
+        <Grid xs={12} md={4}>
           <Card sx={{ pt: 10, pb: 5, px: 3 }}>
             {currentUser && (
               <Label
@@ -379,12 +301,13 @@ export default function UserNewEditForm({ currentUser }) {
                     <br /> max size of {fData(3145728)}
                   </Typography>
                 }
+                disabled
               />
             </Box>
           </Card>
-        </Grid> */}
+        </Grid>
 
-        <Grid xs={12} md={12}>
+        <Grid xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Box
               rowGap={3}
@@ -395,11 +318,11 @@ export default function UserNewEditForm({ currentUser }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <RHFTextField name="username" label="username" />
-              {/* <RHFTextField name="lastName" label="Last Name" /> */}
-              <RHFTextField name="email" label="Email Address" />
+              <RHFTextField name="firstName" label="First Name" disabled />
+              <RHFTextField name="lastName" label="Last Name" disabled />
+              <RHFTextField name="email" label="Email Address" disabled />
               <Controller
-                name="mobile"
+                name="phoneNumber"
                 control={control}
                 defaultValue=""
                 rules={{ required: 'Phone number is required' }}
@@ -410,6 +333,7 @@ export default function UserNewEditForm({ currentUser }) {
                       value={field.value}
                       country="ae"
                       enableSearch
+                      disabled
                       specialLabel={
                         <span
                           style={{
@@ -449,46 +373,7 @@ export default function UserNewEditForm({ currentUser }) {
                   </FormControl>
                 )}
               />
-
-              {!currentUser ? (
-                <>
-                  <RHFTextField
-                    name="password"
-                    label="Password"
-                    type={password.value ? 'text' : 'password'}
-                    autoComplete="new-password"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={password.onToggle} edge="end">
-                            <Iconify
-                              icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'}
-                            />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <RHFTextField
-                    name="confirmPassword"
-                    label="Confirm New Password"
-                    type={password.value ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={password.onToggle} edge="end">
-                            <Iconify
-                              icon={password.value ? 'solar:eye-bold' : 'solar:eye-closed-bold'}
-                            />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </>
-              ) : null}
-
-              {/* <Controller
+              <Controller
                 name="dob"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
@@ -505,6 +390,7 @@ export default function UserNewEditForm({ currentUser }) {
                         helperText: error?.message,
                       },
                     }}
+                    disabled
                   />
                 )}
               />
@@ -535,13 +421,19 @@ export default function UserNewEditForm({ currentUser }) {
                     </li>
                   );
                 }}
+                disabled
               />
 
-              <RHFTextField name="state" label="State/Region" />
-              <RHFTextField name="city" label="City" />
-              <RHFTextField name="address" label="Address" /> */}
-              <RHFSelect fullWidth name="role" label="Role">
-                {roleOptions.map((option) => (
+              <RHFTextField name="state" label="State/Region" disabled />
+              <RHFTextField name="city" label="City" disabled />
+              <RHFTextField name="address" label="Address" disabled />
+              <RHFSelect fullWidth name="role" label="Role" disabled>
+                {[
+                  { value: 'super_admin', name: 'Super Admin' },
+                  { value: 'admin', name: 'Admin' },
+                  { value: 'hod', name: 'HOD' },
+                  { value: 'sub_hod', name: 'SUB HOD' },
+                ].map((option) => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.name}
                   </MenuItem>
@@ -558,9 +450,11 @@ export default function UserNewEditForm({ currentUser }) {
                     isOptionEqualToValue={(option, value) => option.id === value.id}
                     renderOption={(props, option) => (
                       <li {...props}>
-                        <Typography variant="subtitle2" fontWeight="bold">
-                          {option?.name}
-                        </Typography>
+                        <div>
+                          <Typography variant="subtitle2" fontWeight="bold">
+                            {`${option?.name}`}
+                          </Typography>
+                        </div>
                       </li>
                     )}
                     renderTags={(selected, getTagProps) =>
@@ -568,55 +462,50 @@ export default function UserNewEditForm({ currentUser }) {
                         <Chip
                           {...getTagProps({ index: tagIndex })}
                           key={option.id}
-                          label={option.name}
+                          label={`${option.name}`}
                           size="small"
                           color="info"
                           variant="soft"
                         />
                       ))
                     }
-                    disabled={userRole === 'hod' || userRole === 'cgm'}
+                    disabled
                   />
 
-                  {role !== 'cgm' && (
-                    <RHFAutocomplete
-                      multiple
-                      name="departments"
-                      label="Departments"
-                      options={departmentOptions || []}
-                      getOptionLabel={(option) => `${option?.name}` || ''}
-                      filterOptions={(x) => x}
-                      isOptionEqualToValue={(option, value) => option?.id === value?.id}
-                      renderOption={(props, option) => (
-                        <li {...props}>
+                  <RHFAutocomplete
+                    multiple
+                    name="departments"
+                    label="Departments"
+                    options={departments || []}
+                    getOptionLabel={(option) => `${option?.name}` || ''}
+                    filterOptions={(x) => x}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                    renderOption={(props, option) => (
+                      <li {...props}>
+                        <div>
                           <Typography variant="subtitle2" fontWeight="bold">
-                            {option?.name}
+                            {`${option?.name}`}
                           </Typography>
-                        </li>
-                      )}
-                      renderTags={(selected, getTagProps) =>
-                        selected.map((option, tagIndex) => (
-                          <Chip
-                            {...getTagProps({ index: tagIndex })}
-                            key={option.id}
-                            label={option.name}
-                            size="small"
-                            color="info"
-                            variant="soft"
-                          />
-                        ))
-                      }
-                    />
-                  )}
+                        </div>
+                      </li>
+                    )}
+                    renderTags={(selected, getTagProps) =>
+                      selected.map((option, tagIndex) => (
+                        <Chip
+                          {...getTagProps({ index: tagIndex })}
+                          key={option.id}
+                          label={`${option.name}`}
+                          size="small"
+                          color="info"
+                          variant="soft"
+                        />
+                      ))
+                    }
+                    disabled
+                  />
                 </>
               )}
             </Box>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!currentUser ? 'Create User' : 'Save Changes'}
-              </LoadingButton>
-            </Stack>
           </Card>
         </Grid>
       </Grid>
@@ -624,6 +513,6 @@ export default function UserNewEditForm({ currentUser }) {
   );
 }
 
-UserNewEditForm.propTypes = {
+UserViewForm.propTypes = {
   currentUser: PropTypes.object,
 };

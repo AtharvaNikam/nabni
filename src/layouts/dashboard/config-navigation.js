@@ -67,6 +67,15 @@ export function useNavData() {
           // { title: t('upload_document'), path: paths.dashboard.uploadDocument, icon: ICONS.file },
           // { title: t('documents'), path: paths.dashboard.documents, icon: ICONS.file },
           {
+            title: t('User Management'),
+            path: paths.dashboard.user.root,
+            icon: ICONS.user,
+            children: [
+              { title: t('list'), path: paths.dashboard.user.list },
+              { title: t('create'), path: paths.dashboard.user.new },
+            ],
+          },
+          {
             title: t('documents'),
             path: paths.dashboard.documents.list,
             icon: ICONS.file,

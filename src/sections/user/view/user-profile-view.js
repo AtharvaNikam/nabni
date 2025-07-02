@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router';
 import UserProfileTasks from '../analytics-tasks';
 
 export default function UserProfileView() {
+  const { t } = useLocales();
   const TASKS =  [
   {
     id: 'walkthrough',
@@ -61,7 +62,7 @@ export default function UserProfileView() {
   const settings = useSettingsContext();
   const navigate = useNavigate();
 
-  const { t } = useLocales();
+  
 
   // const { user } = useAuthContext();
   const { enqueueSnackbar } = useSnackbar();
