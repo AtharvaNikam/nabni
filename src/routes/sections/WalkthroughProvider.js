@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback, createContext, useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Joyride from 'react-joyride';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FullScreenIntro from 'src/components/walkthrough/FullScreenIntro';
 import { useAuthContext } from 'src/auth/hooks';
 import { useLocales } from 'src/locales';
@@ -15,6 +15,7 @@ export const useWalkthrough = () => useContext(WalkthroughContext);
 export const WalkthroughProvider = ({ children }) => {
   const { t } = useLocales();
   const { user } = useAuthContext();
+  const navigate = useNavigate();
   console.log(user);
   const steps = useMemo(() => {
     const baseSteps = [
@@ -47,6 +48,11 @@ export const WalkthroughProvider = ({ children }) => {
       content: t('walkthrough.steps.documents'),
       disableBeacon: true,
     });
+    baseSteps.push({
+      target: '[data-tour="step-upload-doc-button"]',
+      content: t('walkthrough.steps.uploadDoc'),
+      disableBeacon: true,
+    });
 
     return baseSteps;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,6 +75,7 @@ export const WalkthroughProvider = ({ children }) => {
       paths.auth.jwt.forgotPasswordOtpVerification,
       paths.auth.jwt.loginOtpVerification,
       paths.auth.jwt.registerOtpVerification,
+      paths.dashboard.documents.list,
     ];
     if (excludedPaths.includes(location.pathname)) return;
 
@@ -89,8 +96,7 @@ export const WalkthroughProvider = ({ children }) => {
       waitForElement();
     }
   }, [location.pathname, steps]);
-
-  // Handle Joyride step progression
+  
   const handleJoyrideCallback = useCallback(
     (data) => {
       const { status, index, action, type } = data;
@@ -108,14 +114,37 @@ export const WalkthroughProvider = ({ children }) => {
         return;
       }
 
-      // Step navigation
+      const currentStep = steps[index];
+
+      if (
+        currentStep?.target === '[data-tour="step-documents-nav"]' &&
+        (type === 'step:after' || action === 'next')
+      ) {
+        // Navigate to document page
+        navigate(paths.dashboard.documents.list);
+
+        // Wait for the upload button (or some target element) to appear before proceeding
+        const waitForUploadButton = () => {
+          const el = document.querySelector('[data-tour="step-upload-doc-button"]');
+          if (el) {
+            setStepIndex(index + 1);
+          } else {
+            requestAnimationFrame(waitForUploadButton);
+          }
+        };
+
+        waitForUploadButton();
+        return;
+      }
+
+      // Regular next/prev step
       if (type === 'step:after' || action === 'next') {
         setTimeout(() => setStepIndex(index + 1), 0);
       } else if (action === 'prev') {
         setTimeout(() => setStepIndex(index - 1), 0);
       }
     },
-    [steps.length]
+    [steps, navigate]
   );
 
   // Handle custom behavior for "Documents" step

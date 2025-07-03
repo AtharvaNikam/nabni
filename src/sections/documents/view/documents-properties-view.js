@@ -39,6 +39,7 @@ const DocumentsPropertiesView = () => {
                 ]}
                 action={
                     <Button
+                        data-tour="step-upload-doc-button"
                         component={RouterLink}
                         href={paths.dashboard.documents.new}
                         variant="contained"
