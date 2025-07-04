@@ -149,7 +149,7 @@ export default function SuperAdminJwtLoginVerifyView() {
       {/* Back to Sign In */}
       <Link
         component={RouterLink}
-        href={paths.auth.super_admin_jwt.superAdminLogin}
+        href={paths.auth.jwt.superAdminLogin}
         color="inherit"
         variant="subtitle2"
         sx={{

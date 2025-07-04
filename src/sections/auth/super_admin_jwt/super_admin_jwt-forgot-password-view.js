@@ -64,7 +64,7 @@ export default function SuperAdminJwtForgotPasswordView() {
       const { data: response } = await axiosInstance.post('/send-otp', inputData);
       console.log(response);
       enqueueSnackbar(response?.message, { variant: 'success' });
-      router.push(`${paths.auth.super_admin_jwt.superAdminForgotPasswordOtpVerification}?identifier=${data.identifier}`);
+      router.push(`${paths.auth.jwt.superAdminForgotPasswordOtpVerification}?identifier=${data.identifier}`);
     } catch (error) {
       console.error(error);
       enqueueSnackbar(
@@ -101,7 +101,7 @@ export default function SuperAdminJwtForgotPasswordView() {
 
       <Link
         component={RouterLink}
-        href={paths.auth.super_admin_jwt.superAdminLogin}
+        href={paths.auth.jwt.superAdminLogin}
         color="inherit"
         variant="subtitle2"
         sx={{

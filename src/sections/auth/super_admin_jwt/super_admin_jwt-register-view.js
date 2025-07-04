@@ -70,7 +70,7 @@ export default function SuperAdminJwtRegisterView() {
         variant: 'success',
       });
       router.push(
-        `${paths.auth.super_admin_jwt.registerOtpVerification}?email=${data.email}&mobile=${data.mobile}`
+        `${paths.auth.jwt.registerOtpVerification}?email=${data.email}&mobile=${data.mobile}`
       );
     } catch (error) {
       console.error(error);
@@ -101,7 +101,7 @@ export default function SuperAdminJwtRegisterView() {
           <Typography variant="h4">{t('register')}</Typography>
           <Stack direction="row" spacing={0.5}>
             <Typography variant="body2"> {t('already_have_account')} </Typography>
-            <Link href={paths.auth.super_admin_jwt.superAdminLogin} component={RouterLink} variant="subtitle2">
+            <Link href={paths.auth.jwt.superAdminLogin} component={RouterLink} variant="subtitle2">
               {t('super_admin_login')}
             </Link>
           </Stack>

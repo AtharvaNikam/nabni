@@ -197,7 +197,7 @@ export default function SuperAdminJwtLoginView() {
 
             <Link
               component={RouterLink}
-              href={paths.auth.super_admin_jwt.superAdminForgotPassword || '#'}
+              href={paths.auth.jwt.superAdminForgotPassword || '#'}
               variant="body2"
               color="inherit"
               underline="always"
@@ -241,7 +241,7 @@ export default function SuperAdminJwtLoginView() {
                 variant="outlined"
                 color="inherit"
                 component={RouterLink}
-                href={paths.auth.super_admin_jwt.superAdminRegister}
+                href={paths.auth.jwt.superAdminRegister}
               >
                 {t('create_super_admin_account')}
               </LoadingButton>

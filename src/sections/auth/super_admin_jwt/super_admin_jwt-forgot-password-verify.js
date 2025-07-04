@@ -120,7 +120,7 @@ export default function SuperAdminJwtForgotPasswordVerifyView() {
         );
         console.log(response);
         enqueueSnackbar('Password updated successfully!', { variant: 'success' });
-        router.push(paths.auth.super_admin_jwt.superAdminLogin); // Redirect to login
+        router.push(paths.auth.jwt.superAdminLogin); // Redirect to login
       }
     } catch (error) {
       console.error(error);
@@ -201,7 +201,7 @@ export default function SuperAdminJwtForgotPasswordVerifyView() {
       {!isVerified && (
         <Link
           component={RouterLink}
-          href={paths.auth.super_admin_jwt.superAdminLogin}
+          href={paths.auth.jwt.superAdminLogin}
           color="inherit"
           variant="subtitle2"
           sx={{
