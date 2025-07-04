@@ -146,19 +146,6 @@ const authJwt = {
         </CompactLayout>
       ),
     },
-  ],
-};
-
-const authSuperAdminJwt = {
-  path: 'jwt',
-  element: (
-    <GuestGuard>
-      <Suspense fallback={<SplashScreen />}>
-        <Outlet />
-      </Suspense>
-    </GuestGuard>
-  ),
-  children: [
     {
       path: 'super-admin-login',
       element: (
@@ -209,6 +196,8 @@ const authSuperAdminJwt = {
     },
   ],
 };
+
+
 
 const authFirebase = {
   path: 'firebase',
@@ -300,6 +289,6 @@ const authSuperAdminGoogle = {
 export const authRoutes = [
   {
     path: 'auth',
-    children: [authAmplify, authJwt, authSuperAdminJwt, authFirebase, authAuth0, authGoogle, authSuperAdminGoogle],
+    children: [authAmplify, authJwt, authFirebase, authAuth0, authGoogle, authSuperAdminGoogle],
   },
 ];

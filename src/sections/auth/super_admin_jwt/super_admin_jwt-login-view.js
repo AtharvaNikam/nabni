@@ -221,7 +221,7 @@ export default function SuperAdminJwtLoginView() {
               fullWidth
               variant="outlined"
               color="inherit"
-              onClick={handleGoogleSignIn}
+              // onClick={handleGoogleSignIn}
               startIcon={<Iconify icon="devicon:google" width={24} />}
               sx={{
                 color: 'text.primary',
