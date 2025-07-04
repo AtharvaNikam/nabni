@@ -67,17 +67,10 @@ export const WalkthroughProvider = ({ children }) => {
   useEffect(() => {
     const done = localStorage.getItem('walkthrough_done');
 
-    // Prevent walkthrough on login screen
-    const excludedPaths = [
-      paths.auth.jwt.login,
-      paths.auth.jwt.register,
-      paths.auth.jwt.forgotPassword,
-      paths.auth.jwt.forgotPasswordOtpVerification,
-      paths.auth.jwt.loginOtpVerification,
-      paths.auth.jwt.registerOtpVerification,
-      paths.dashboard.documents.list,
-    ];
-    if (excludedPaths.includes(location.pathname)) return;
+    const isIncludedPath =
+      location.pathname.startsWith(paths.dashboard.root);
+
+    if (!isIncludedPath) return;
 
     if (!done) {
       const firstStepSelector = steps[0].target;
@@ -96,7 +89,7 @@ export const WalkthroughProvider = ({ children }) => {
       waitForElement();
     }
   }, [location.pathname, steps]);
-  
+
   const handleJoyrideCallback = useCallback(
     (data) => {
       const { status, index, action, type } = data;
