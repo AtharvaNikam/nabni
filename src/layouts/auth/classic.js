@@ -28,9 +28,9 @@ const METHODS = [
     icon: '/assets/icons/auth/ic_jwt.svg',
   },
   {
-    id: 'super_admin_jwt',
+    id: 'jwt',
     label: 'SuperAdminJwt',
-    path: paths.auth.super_admin_jwt.super_admin_login,
+    path: paths.auth.jwt.superAdminLogin,
     icon: '/assets/icons/auth/ic_jwt.svg',
   },
   {

@@ -150,7 +150,7 @@ const authJwt = {
 };
 
 const authSuperAdminJwt = {
-  path: 'super_admin_jwt',
+  path: 'jwt',
   element: (
     <GuestGuard>
       <Suspense fallback={<SplashScreen />}>
@@ -160,7 +160,7 @@ const authSuperAdminJwt = {
   ),
   children: [
     {
-      path: 'super_admin_login',
+      path: 'super-admin-login',
       element: (
         <CompactLayout>
           <SuperAdminJwtLoginPage />
@@ -168,7 +168,7 @@ const authSuperAdminJwt = {
       ),
     },
     {
-      path: 'super_admin_register',
+      path: 'super-admin-register',
       element: (
         <CompactLayout>
           <SuperAdminJwtRegisterPage />
@@ -176,7 +176,7 @@ const authSuperAdminJwt = {
       ),
     },
     {
-      path: 'super_admin_forgot-password',
+      path: 'super-admin-forgot-password',
       element: (
         <CompactLayout>
           <SuperAdminJwtForgotPasswordPage />
@@ -184,7 +184,7 @@ const authSuperAdminJwt = {
       ),
     },
     {
-      path: 'super_admin_forgot-password-otp-verification',
+      path: 'super-admin-forgot-password-otp-verification',
       element: (
         <CompactLayout>
           <SuperAdminJwtVerifyForgotPasswordPage />
@@ -192,7 +192,7 @@ const authSuperAdminJwt = {
       ),
     },
     {
-      path: 'super_admin_otp-verification',
+      path: 'super-admin-otp-verification',
       element: (
         <CompactLayout>
           <SuperAdminJwtVerifyRegisterOtpPage />
@@ -200,7 +200,7 @@ const authSuperAdminJwt = {
       ),
     },
     {
-      path: 'super_admin_login-otp-verification',
+      path: 'super-admin-login-otp-verification',
       element: (
         <CompactLayout>
           <SuperAdminJwtVerifyLoginOtpPage />
