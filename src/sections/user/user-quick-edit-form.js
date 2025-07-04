@@ -33,9 +33,6 @@ import 'react-phone-input-2/lib/material.css';
 const allRoles = [
   { value: 'super_admin', name: 'Super Admin' },
   { value: 'admin', name: 'Admin' },
-  { value: 'cgm', name: 'CGM' },
-  { value: 'hod', name: 'HOD' },
-  { value: 'sub_hod', name: 'SUB HOD' },
 ];
 export default function UserQuickEditForm({ currentUser, open, onClose, refreshUsers }) {
   console.log(currentUser);
