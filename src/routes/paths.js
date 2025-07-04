@@ -67,6 +67,14 @@ export const paths = {
       forgotPassword: `${ROOTS.AUTH}/jwt/forgot-password`,
       forgotPasswordOtpVerification: `${ROOTS.AUTH}/jwt/forgot-password-otp-verification`,
     },
+    super_admin_jwt: {
+      superAdminLogin: `${ROOTS.AUTH}/super_admin_jwt/super_admin_login`,
+      superAdminRegister: `${ROOTS.AUTH}/super_admin_jwt/super_admin_register`,
+      superAdminRegisterOtpVerification: `${ROOTS.AUTH}/super_admin_jwt/super_admin_otp-verification`,
+      superAdminLoginOtpVerification: `${ROOTS.AUTH}/super_admin_jwt/super_admin_login-otp-verification`,
+      superAdminForgotPassword: `${ROOTS.AUTH}/super_admin_jwt/super_admin_forgot-password`,
+      superAdminForgotPasswordOtpVerification: `${ROOTS.AUTH}/super_admin_jwt/super_admin_forgot-password-otp-verification`,
+    },
     firebase: {
       login: `${ROOTS.AUTH}/firebase/login`,
       verify: `${ROOTS.AUTH}/firebase/verify`,

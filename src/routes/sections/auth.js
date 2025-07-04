@@ -26,6 +26,15 @@ const JwtForgotPasswordPage = lazy(() => import('src/pages/auth/jwt/forgot-passw
 const JwtVerifyForgotPasswordPage = lazy(() => import('src/pages/auth/jwt/verify-forget-password-otp'));
 const JwtGoogleLoginPage = lazy(() => import('src/pages/auth/jwt/google-login'));
 
+// Super Admin JWT
+const SuperAdminJwtLoginPage = lazy(() => import('src/pages/auth/super_admin_jwt/super_admin_login'));
+const SuperAdminJwtRegisterPage = lazy(() => import('src/pages/auth/super_admin_jwt/super_admin_register'));
+const SuperAdminJwtVerifyRegisterOtpPage = lazy(() => import('src/pages/auth/super_admin_jwt/super_admin_verify-register-otp'));
+const SuperAdminJwtVerifyLoginOtpPage = lazy(() => import('src/pages/auth/super_admin_jwt/super_admin_verify-login-otp'));
+const SuperAdminJwtForgotPasswordPage = lazy(() => import('src/pages/auth/super_admin_jwt/super_admin_forgot-password'));
+const SuperAdminJwtVerifyForgotPasswordPage = lazy(() => import('src/pages/auth/super_admin_jwt/super_admin_verify-forget-password-otp'));
+const SuperAdminJwtGoogleLoginPage = lazy(() => import('src/pages/auth/super_admin_jwt/super_admin_google-login'));
+
 // FIREBASE
 const FirebaseLoginPage = lazy(() => import('src/pages/auth/firebase/login'));
 const FirebaseRegisterPage = lazy(() => import('src/pages/auth/firebase/register'));
@@ -140,6 +149,67 @@ const authJwt = {
   ],
 };
 
+const authSuperAdminJwt = {
+  path: 'super_admin_jwt',
+  element: (
+    <GuestGuard>
+      <Suspense fallback={<SplashScreen />}>
+        <Outlet />
+      </Suspense>
+    </GuestGuard>
+  ),
+  children: [
+    {
+      path: 'super_admin_login',
+      element: (
+        <CompactLayout>
+          <SuperAdminJwtLoginPage />
+        </CompactLayout>
+      ),
+    },
+    {
+      path: 'super_admin_register',
+      element: (
+        <CompactLayout>
+          <SuperAdminJwtRegisterPage />
+        </CompactLayout>
+      ),
+    },
+    {
+      path: 'super_admin_forgot-password',
+      element: (
+        <CompactLayout>
+          <SuperAdminJwtForgotPasswordPage />
+        </CompactLayout>
+      ),
+    },
+    {
+      path: 'super_admin_forgot-password-otp-verification',
+      element: (
+        <CompactLayout>
+          <SuperAdminJwtVerifyForgotPasswordPage />
+        </CompactLayout>
+      ),
+    },
+    {
+      path: 'super_admin_otp-verification',
+      element: (
+        <CompactLayout>
+          <SuperAdminJwtVerifyRegisterOtpPage />
+        </CompactLayout>
+      ),
+    },
+    {
+      path: 'super_admin_login-otp-verification',
+      element: (
+        <CompactLayout>
+          <SuperAdminJwtVerifyLoginOtpPage />
+        </CompactLayout>
+      ),
+    },
+  ],
+};
+
 const authFirebase = {
   path: 'firebase',
   element: (
@@ -216,9 +286,20 @@ const authGoogle = {
   ),
 };
 
+const authSuperAdminGoogle = {
+  path: 'google-verification',
+  element: (
+    <GuestGuard>
+      <Suspense fallback={<SplashScreen />}>
+        <SuperAdminJwtGoogleLoginPage />
+      </Suspense>
+    </GuestGuard>
+  ),
+};
+
 export const authRoutes = [
   {
     path: 'auth',
-    children: [authAmplify, authJwt, authFirebase, authAuth0, authGoogle],
+    children: [authAmplify, authJwt, authSuperAdminJwt, authFirebase, authAuth0, authGoogle, authSuperAdminGoogle],
   },
 ];

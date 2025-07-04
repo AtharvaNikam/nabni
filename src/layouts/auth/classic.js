@@ -28,6 +28,12 @@ const METHODS = [
     icon: '/assets/icons/auth/ic_jwt.svg',
   },
   {
+    id: 'super_admin_jwt',
+    label: 'SuperAdminJwt',
+    path: paths.auth.super_admin_jwt.super_admin_login,
+    icon: '/assets/icons/auth/ic_jwt.svg',
+  },
+  {
     id: 'firebase',
     label: 'Firebase',
     path: paths.auth.firebase.login,
